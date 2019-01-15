@@ -44,11 +44,12 @@ function updateNum() {
   if (clicks == 3) {
     alert("nice");
     var clicks = 0;
+    var num = 0;
   }
 };
 
 //test
 
 
-document.write("test8");
+document.write("test9");
 //endtest
