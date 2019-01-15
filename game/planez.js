@@ -18,8 +18,8 @@ function draw() {
 
 var y = 0;
 
-while (y < 300) {
-  setTimeout(draw(), 10);
-  x++;
+// while (y < 300) {
+//   setTimeout(draw(), 10);
+//   x++;
   
-};
+// };
