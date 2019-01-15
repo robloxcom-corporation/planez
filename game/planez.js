@@ -42,12 +42,13 @@ function updateNum() {
   document.getElementById("box").value ++;
   clicks = clicks + 1;
   if (clicks == 3) {
-  alert("nice");
+    alert("nice");
+    var clicks = 0;
   }
 };
 
 //test
 
 
-document.write("test7");
+document.write("test8");
 //endtest
