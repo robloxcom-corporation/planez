@@ -11,8 +11,6 @@ button.innerHTML = "Radical!";
 
 var x = 0;
 // 2. Append somewhere
-var body = document.getElementsByTagName("body")[0];
-body.appendChild(button);
 
 // 3. Add event handler
 
