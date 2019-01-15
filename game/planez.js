@@ -17,9 +17,10 @@ function draw() {
 }
 
 
-
-while (x < 300) {
-  setTimeout(draw(), 20);
-  x++;
-  console.log(x)
+window.onload = function() {
+  while (x < 300) {
+    setTimeout(draw(), 20);
+    x++;
+    console.log(x)
+  };
 };
