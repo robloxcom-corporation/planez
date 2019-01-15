@@ -45,4 +45,6 @@ function updateNum() {
 if (num == 3) {
   alert("nice");
 }
+
+document.write("test1");
 //endtest
