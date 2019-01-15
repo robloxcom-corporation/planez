@@ -16,7 +16,9 @@ function draw() {
   image.src = "assets/sprites/lvl1 1.jpg"
 }
 
-while () {
+var y = 0;
+
+while (y == 0) {
   draw();
   x++;
 }
