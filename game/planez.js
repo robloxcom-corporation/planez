@@ -19,6 +19,6 @@ function draw() {
 
 
 while (x < 300) {
-  setTimeout(draw(), 10);
+  setTimeout(draw(), 500);
   x++;
 };
