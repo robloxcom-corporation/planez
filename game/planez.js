@@ -1,4 +1,5 @@
 var x = 0;
+var timer;
 
 function draw() {
 
@@ -14,14 +15,14 @@ function draw() {
   };
 
   image.src = "assets/sprites/lvl1 1.jpg"
-    console.log("draw")
 }
 
 
-window.onload = function() {
-  while (x < 300) {
-    setTimeout(draw(), 20);
-    x++;
-    console.log(x)
-  };
+function loop() {
+  draw();
+  x++;
+  timer = setTimeout(loop(), 20);
 };
+
+var button = document.getElementById("start")
+button.onclick = function() { loop() };
