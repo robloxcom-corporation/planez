@@ -20,6 +20,6 @@ button.addEventListener("click", myFunction);
 
 function myFunction() {
   var x = x + 1;
-}
+};
 
 document.write(x);
