@@ -38,7 +38,7 @@ numbutton.onclick = function() { updateNum() };
 
 function updateNum() {
   document.getElementById("box").value ++;
-}
+};
 
 //test
 if (var num == 3) {
