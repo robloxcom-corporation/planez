@@ -21,7 +21,7 @@ function draw() {
 function loop() {
   draw();
   x++;
-  timer = setTimeout(loop(), 20);
+  timer = setTimeout(loop, 20);
 };
 
 var button = document.getElementById("start");
