@@ -27,3 +27,10 @@ function loop() {
 
 var button = document.getElementById("start");
 button.onclick = function() { loop() };
+
+
+var num = 0;
+var numbutton = document.getElementById("counter");
+numbutton.onclick = function() { num++ };
+
+document.write(num);
