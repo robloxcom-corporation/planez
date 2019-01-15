@@ -49,5 +49,5 @@ if (clicks == 3) {
   alert("nice");
 }};
 
-document.write("test2");
+document.write("test4");
 //endtest
