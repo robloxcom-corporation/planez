@@ -31,6 +31,9 @@ button.onclick = function() { loop() };
 
 var num = 0;
 var numbutton = document.getElementById("counter");
-numbutton.onclick = function() { num++ };
+numbutton.onclick = function() { num++; updateNum() };
 
-document.write(num);
+function updateNum() {
+  box = document.getElementById("box");
+  box.value = num;
+}
