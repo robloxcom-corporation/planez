@@ -14,11 +14,8 @@ var x = 0;
 
 // 3. Add event handler
 
-button.addEventListener("click", myFunction);
-
-function myFunction() {
-  var x = "x + 1";
-  document.write(x);
-};
+button.addEventListener("click", function {
+  alert("hello world");                       
+ });
 
 
