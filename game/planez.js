@@ -16,10 +16,9 @@ function draw() {
   image.src = "assets/sprites/lvl1 1.jpg"
 }
 
-var y = 0;
 
-// while (y < 300) {
-//   setTimeout(draw(), 10);
-//   x++;
-  
-// };
+
+while (x < 300) {
+  setTimeout(draw(), 10);
+  x++;
+};
