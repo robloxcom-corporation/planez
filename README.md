@@ -1,0 +1,2 @@
+# planez
+javascript clicker game
