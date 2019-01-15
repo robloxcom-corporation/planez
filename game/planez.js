@@ -18,5 +18,5 @@ function draw() {
 
 for () {
   draw();
-  x ++;
+  x++;
 }
