@@ -49,5 +49,5 @@ function updateNum() {
 //test
 
 
-document.write("test6");
+document.write("test7");
 //endtest
