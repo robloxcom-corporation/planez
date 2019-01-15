@@ -41,9 +41,8 @@ function updateNum() {
 };
 
 //test
-var m = 2;
 
-if (m = 3) {
+if (num == 3) {
   alert("nice");
 }
 //endtest
