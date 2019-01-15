@@ -44,10 +44,10 @@ function updateNum() {
 };
 
 //test
-
+function loop() {
 if (clicks == 3) {
   alert("nice");
-}
+}};
 
 document.write("test2");
 //endtest
