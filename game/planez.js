@@ -45,9 +45,10 @@ function updateNum() {
 
 //test
 function loop() {
-if (clicks == 3) {
-  alert("nice");
-}};
+  if (clicks == 3) {
+    alert("nice");
+  }
+};
 
-document.write("test4");
+document.write("test5");
 //endtest
