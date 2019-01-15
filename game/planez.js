@@ -34,6 +34,5 @@ var numbutton = document.getElementById("counter");
 numbutton.onclick = function() { num++; updateNum() };
 
 function updateNum() {
-  box = document.getElementById("box");
-  box.value = num;
+  document.getElementById("box").value ++;
 }
