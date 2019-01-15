@@ -14,7 +14,7 @@ function draw() {
     context.drawImage(this, x, 0, 100, 100);
   };
 
-  image.src = "assets/sprites/lvl1 1.jpg"
+  image.src = "assets/sprites/lvl1 1.jpg";
 }
 
 
@@ -24,5 +24,5 @@ function loop() {
   timer = setTimeout(loop(), 20);
 };
 
-var button = document.getElementById("start")
+var button = document.getElementById("start");
 button.onclick = function() { loop() };
