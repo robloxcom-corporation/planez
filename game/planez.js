@@ -38,10 +38,11 @@ numbutton.onclick = function() { updateNum() };
 
 function updateNum() {
   document.getElementById("box").value ++;
+  x = x + 1
 };
 
 //test
-if (var num == 3) {
+if (x = 3) {
   window.alert("nice");
 }
 //endtest
