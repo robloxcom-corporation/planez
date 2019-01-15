@@ -39,3 +39,20 @@ numbutton.onclick = function() { updateNum() };
 function updateNum() {
   document.getElementById("box").value ++;
 }
+
+//the button :D
+var c = 1;
+
+var button = document.createElement("button");
+button.innerHTML = "Do Something";
+
+
+var body = document.getElementsByTagName("body")[0];
+body.appendChild(button);
+
+button.addEventListener ("click", function() {
+  window.alert(x);
+  c = c + 1;
+  
+});
+//end
