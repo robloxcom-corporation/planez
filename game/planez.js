@@ -17,7 +17,7 @@ body.appendChild(button);
 // 3. Add event handler
 button.addEventListener ("click", function() {
   alert("hello wrold");
-};
+)};
 
 document.write(x);
 
