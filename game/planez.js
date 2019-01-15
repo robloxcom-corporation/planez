@@ -4,7 +4,6 @@ function draw() {
   var context = canvas.getContext("2d");
 
   context.fillStyle = "#000000";
-  context.fillRect(0,0,100,100);
 
   var image = new Image();
 
