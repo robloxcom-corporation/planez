@@ -14,6 +14,7 @@ function draw() {
   };
 
   image.src = "assets/sprites/lvl1 1.jpg"
+    console.log("draw")
 }
 
 
