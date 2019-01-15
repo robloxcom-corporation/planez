@@ -41,7 +41,7 @@ function updateNum() {
 }
 
 //test
-if (x = 3) {
+if (num = 3) {
   window.alert("nice");
 }
 //endtest
