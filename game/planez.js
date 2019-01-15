@@ -1,2 +1,2 @@
-document.write("Hello World");
+document.write("Hello World. This is cool");
 
