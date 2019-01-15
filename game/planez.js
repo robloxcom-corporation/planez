@@ -19,6 +19,7 @@ function draw() {
 
 
 function loop() {
+  console.log("loop");
   draw();
   x++;
   timer = setTimeout(loop, 20);
