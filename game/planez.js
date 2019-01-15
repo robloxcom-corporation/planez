@@ -43,6 +43,6 @@ function updateNum() {
 
 //test
 if (x = 3) {
-  window.alert("nice");
+  alert("nice");
 }
 //endtest
