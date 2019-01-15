@@ -36,15 +36,18 @@ document.getElementById("box");
 box.onload = function() { box.value = 1 };
 numbutton.onclick = function() { updateNum() };
 
+var clicks = 0;
+
 function updateNum() {
   document.getElementById("box").value ++;
+  clicks = clicks + 1;
 };
 
 //test
 
-if (num == 3) {
+if (clicks == 3) {
   alert("nice");
 }
 
-document.write("test1");
+document.write("test2");
 //endtest
