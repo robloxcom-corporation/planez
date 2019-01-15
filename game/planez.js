@@ -43,13 +43,11 @@ function updateNum() {
   clicks = clicks + 1;
   if (clicks == 3) {
     alert("nice");
-    var clicks = 0;
-    var num = 0;
   }
 };
 
 //test
 
 
-document.write("test9");
+document.write("test10;
 //endtest
