@@ -1,3 +1,5 @@
+var x = 0;
+
 function draw() {
 
   var canvas = document.getElementById("gamecanvas");
@@ -8,10 +10,13 @@ function draw() {
   var image = new Image();
 
   image.onload = function() {
-    context.drawImage(this,0, 0, 100, 100);
+    context.drawImage(this, x, 0, 100, 100);
   };
 
   image.src = "assets/sprites/lvl1 1.jpg"
 }
 
-draw();
+for () {
+  draw();
+  x ++;
+}
