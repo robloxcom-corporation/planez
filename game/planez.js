@@ -7,7 +7,6 @@ context.fillStyle = "#000000"
 context.fillRect(0,0,100,100);
 
 var button = document.createElement("button");
-button.innerHTML = "Do Something";
 
 var x = 0;
 // 2. Append somewhere
