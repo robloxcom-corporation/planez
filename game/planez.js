@@ -9,7 +9,7 @@ function draw() {
   var image = new Image();
 
   image.onload = function() {
-    context.drawImage(this,0,0);
+    context.drawImage(this,0, 0, 100, 100);
   };
 
   image.src = "assets/sprites/lvl1 1.jpg"
