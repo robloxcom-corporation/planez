@@ -19,6 +19,7 @@ function draw() {
 var y = 0;
 
 while (y == 0) {
-  draw();
+  setTimeout(draw(), 10);
   x++;
+  
 };
