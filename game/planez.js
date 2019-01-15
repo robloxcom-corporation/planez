@@ -29,9 +29,12 @@ var button = document.getElementById("start");
 button.onclick = function() { loop() };
 
 
-var num = 0;
+var num = 1;
 var numbutton = document.getElementById("counter");
-numbutton.onclick = function() { num++; updateNum() };
+document.getElementById("box");
+
+box.onload = function() { box.value = 1 };
+numbutton.onclick = function() { updateNum() };
 
 function updateNum() {
   document.getElementById("box").value ++;
