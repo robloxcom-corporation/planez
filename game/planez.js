@@ -17,6 +17,6 @@ body.appendChild(button);
 // 3. Add event handler
 button.addEventListener ("click", function() {
   var x = x + 1;
-};
+});
 
 document.write(x);
