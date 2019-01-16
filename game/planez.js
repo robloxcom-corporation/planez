@@ -1,4 +1,4 @@
-document.write("nice");
+document.write("nice1");
 var x = 0
 function draw() {
 
