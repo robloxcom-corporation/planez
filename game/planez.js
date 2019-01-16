@@ -1,5 +1,5 @@
 document.write("nice");
-
+var x = 0
 function draw() {
 
   var image = new Image();
