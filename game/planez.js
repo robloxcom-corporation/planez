@@ -28,4 +28,4 @@ function loop() {
   timer = setTimeout(loop, 1);
 };
 
-window.onload(init());
+// window.onload(init());
