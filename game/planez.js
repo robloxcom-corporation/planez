@@ -6,7 +6,7 @@ function draw() {
     context.drawImage(this, x, 0, 100, 100);
   };
 
-  image.src = "planez/assets/sprites/paper/pa1";
+  image.src = "planez/assets/sprites/paper/pa1.png";
 };
 /*
 var x = 0;
