@@ -37,7 +37,7 @@ window.onload(init());
 
 
 
-
+//noahs stuff
 
 var clicks = 0;
 document.getElementById('counter').innerHTML = clicks
