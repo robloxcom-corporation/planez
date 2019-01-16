@@ -1,12 +1,15 @@
 var x = 0;
 var timer;
 
+var canvas = document.getElementById("gamecanvas");
+var context = canvas.getContext("2d");
+
+function init() {
+  context.fillStyle = "#808080"
+  context.fillRect(0,0,500,100)
+}
+
 function draw() {
-
-  var canvas = document.getElementById("gamecanvas");
-  var context = canvas.getContext("2d");
-
-  context.fillStyle = "#000000";
 
   var image = new Image();
 
@@ -18,8 +21,8 @@ function draw() {
 };
 
 
+
 function loop() {
-  console.log("loop");
   draw();
   x+= .1;
   timer = setTimeout(loop, 1);
