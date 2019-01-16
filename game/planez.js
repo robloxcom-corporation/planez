@@ -5,9 +5,9 @@ var canvas = document.getElementById("gamecanvas");
 var context = canvas.getContext("2d");
 
 function init() {
-  context.fillStyle = "#808080"
-  context.fillRect(0,0,500,100)
-}
+  context.fillStyle = "#808080";
+  context.fillRect(0,0,500,100);
+};
 
 function draw() {
 
@@ -28,3 +28,4 @@ function loop() {
   timer = setTimeout(loop, 1);
 };
 
+window.onload(init())
