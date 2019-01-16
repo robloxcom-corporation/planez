@@ -88,6 +88,7 @@ function updateScore(num) {
 }
 
 window.onload = init();
+
 canvas.addEventListener("click", (e) => {
   mouse = newPos(e.clientX, e.clientY)
   if (buttons.click.checkIntersect(mouse)) {
