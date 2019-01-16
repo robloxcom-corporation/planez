@@ -10,7 +10,7 @@ function init() {
   
   context.beginPath();
   context.lineWidth = "2";
-  context.rect(canvas.width/3, 2 * canvas.height/3, 300, 300);
+  context.rect(canvas.width/3, 100, 2 * canvas.width/3, 300);
   context.stroke();
 };
 
