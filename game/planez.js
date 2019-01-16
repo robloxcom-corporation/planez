@@ -35,7 +35,7 @@ function loop() {
 
 window.onload(init());
 
-
+document.write("test")
 
 //noahs stuff
 
