@@ -8,7 +8,7 @@ function draw() {
 
   image.src = "planez/assets/sprites/paper/pa1";
 };
-
+/*
 var x = 0;
 var timer;
 
@@ -48,3 +48,4 @@ window.onload(init());
 
 
 //asdasd
+*/
