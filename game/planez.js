@@ -11,6 +11,7 @@ function init() {
   context.beginPath();
   context.lineWidth = "2";
   context.rect(canvas.width/3, 100, 300, 300);
+  context.stroke();
 };
 
 function draw() {
