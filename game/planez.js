@@ -5,6 +5,7 @@ function draw() {
   image.onload = function() {
     context.drawImage(this, x, 0, 100, 100);
   };
+  document.write("nice")
 
   image.src = "planez/assets/sprites/paper/pa1.png";
 };
