@@ -7,6 +7,10 @@ var context = canvas.getContext("2d");
 function init() {
   context.fillStyle = "#808080";
   context.fillRect(0,0,500,100);
+  
+  context.beginPath();
+  context.lineWidth = "2";
+  context.rect(
 };
 
 function draw() {
