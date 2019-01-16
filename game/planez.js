@@ -93,5 +93,6 @@ canvas.addEventListener("click", (e) => {
   if (buttons.click.checkIntersect(mouse)) {
     console.log("yes");
     score++;
-  }
+    updateScore(score);
+  };
 });
