@@ -40,9 +40,6 @@ var clicks = 0;
 
 function updateNum() {
   document.getElementById("box").value ++;
-  clicks = clicks + 1;
-  if (clicks == 3) {
-    alert("nice");
   }
 };
 
