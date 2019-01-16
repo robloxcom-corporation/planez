@@ -1,17 +1,4 @@
-document.write("nice1");
-var x = 0
-function draw() {
 
-  var image = new Image();
-
-  image.onload = function() {
-    context.drawImage(this, x, 0, 100, 100);
-  };
-
-
-  image.src = "planez/assets/sprites/paper/pa1.png";
-};
-/*
 var x = 0;
 var timer;
 
@@ -51,4 +38,4 @@ window.onload(init());
 
 
 //asdasd
-*/
+
