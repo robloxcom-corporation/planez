@@ -35,29 +35,4 @@ function loop() {
 
 window.onload(init());
 
-document.write("test")
-
-//noahs stuff
-
-var clicks = 0;
-document.getElementById('counter').innerHTML = clicks
-
-var button = document.createElement("button");
-button.innerHTML = "Clicker";
-
-// 2. Append somewhere
-var body = document.getElementsByTagName("body")[0];
-body.appendChild(button);
-
-// 3. Add event handler
-button.addEventListener ("click", function() {
-  clicks = clicks + 1;
-  document.getElementById('counter').innerHTML = clicks
-  if (clicks == 4) {
-    clicks = clicks - 4
-    document.getElementById('counter').innerHTML = clicks
-  };
-});
-
-
 //asdasd
