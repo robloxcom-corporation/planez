@@ -30,7 +30,7 @@ function init() {
   context.font = "20px Verdana";
   context.fillText("Score: ", (2 * canvas.width/3) - (2 * canvas.width/6), (canvas.width/5) + (2 * canvas.width/3) + 50);
   context.fillText("0000", (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + 50, 200);
-  cover = newPos((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + 50);
+  cover = newPos((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + 55);
 };
 
 
@@ -81,7 +81,7 @@ function loop() {
 function updateScore(num) {
   context.beginPath();
   context.fillStyle = "#ffffff";
-  context.fillRect(cover.x, cover.y, 200, -80);
+  context.fillRect(cover.x, cover.y, 200, -30);
   context.stroke();
   context.font = "20px Verdana";
   context.fillText(score, (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + 50, 200);
