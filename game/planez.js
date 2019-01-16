@@ -6,10 +6,12 @@ var canvas = document.getElementById("gamecanvas");
 var context = canvas.getContext("2d");
 var buttons = {};
 var mouse;
+var cover;
+var score = 0000;
 
 function init() {
   context.fillStyle = "#808080";
-  context.fillRect(0,0,500,100);
+  context.fillRect(0, 0, canvas.width, canvas.width/5);
 
   context.beginPath();
   context.lineWidth = "2";
@@ -24,7 +26,13 @@ function init() {
   context.fillRect(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
   context.stroke();
   buttons.click = newButton(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
+
+  context.font = "20px Verdana";
+  context.fillText("Score: ", (2 * canvas.width/3) - (2 * canvas.width/6), (canvas.width/5) + (2 * canvas.width/3) + 50);
+  context.fillText("0000", (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + 50, 200);
+  cover = newPos((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + 50);
 };
+
 
 function newButton(x, y, width, height) {
   var obj = {};
@@ -42,6 +50,7 @@ function newButton(x, y, width, height) {
   };
   return obj;
 };
+
 
 function newPos(x, y) {
   var obj = {};
@@ -68,10 +77,21 @@ function loop() {
   timer = setTimeout(loop, 1);
 };
 
+
+function updateScore(num) {
+  context.beginPath();
+  context.fillStyle = "#ffffff";
+  context.fillRect(cover.x, cover.y, 200, -80);
+  context.stroke();
+  context.font = "20px Verdana";
+  context.fillText(score, (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + 50, 200);
+}
+
 window.onload = init();
 canvas.addEventListener("click", (e) => {
   mouse = newPos(e.clientX, e.clientY)
   if (buttons.click.checkIntersect(mouse)) {
     console.log("yes");
+    score++;
   }
 });
