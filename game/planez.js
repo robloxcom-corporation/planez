@@ -84,6 +84,7 @@ function updateScore(num) {
   context.fillRect(cover.x, cover.y, 200, -30);
   context.stroke();
   context.font = "20px Verdana";
+  context.fillStyle = "#ff0000";
   context.fillText(score, (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + 50, 200);
   context.stroke();
 }
