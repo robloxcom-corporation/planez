@@ -25,26 +25,3 @@ function loop() {
   timer = setTimeout(loop, 1);
 };
 
-var button = document.getElementById("start");
-button.onclick = function() { loop() };
-
-
-var num = 1;
-var numbutton = document.getElementById("counter");
-document.getElementById("box");
-
-box.onload = function() { box.value = 1 };
-numbutton.onclick = function() { updateNum() };
-
-var clicks = 0;
-
-function updateNum() {
-  document.getElementById("box").value ++;
-  }
-};
-
-//test
-
-
-document.write("test10");
-//endtest
