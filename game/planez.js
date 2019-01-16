@@ -1,3 +1,14 @@
+function draw() {
+
+  var image = new Image();
+
+  image.onload = function() {
+    context.drawImage(this, x, 0, 100, 100);
+  };
+
+  image.src = "planez/assets/sprites/paper/pa1";
+};
+
 var x = 0;
 var timer;
 
@@ -34,5 +45,6 @@ function loop() {
 };
 
 window.onload(init());
+
 
 //asdasd
