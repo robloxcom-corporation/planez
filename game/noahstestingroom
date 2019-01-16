@@ -1,0 +1,6 @@
+var img = document.getElementById('id1');
+var newImg = new Image;
+newImg.onload = function() {
+    img.src = this.src;
+}
+newImg.src = '';
