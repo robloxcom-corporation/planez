@@ -7,7 +7,9 @@ var buttons = {};
 var cover;
 var score = 0000;
 var model;
-var planes;
+var request = new XMLHttpRequest();
+
+
 
 function init() {
   context.fillStyle = "#808080";
@@ -27,7 +29,7 @@ function init() {
   context.stroke();
   buttons.click = newButton(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
 
-  
+//  console.log(getJson());
   model = new Image();
   model.onload = function() {
     context.drawImage(this, posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
@@ -42,9 +44,11 @@ function init() {
 
 
 
-
-
 };
+
+$.getJSON("planes.json", function (data) {
+  console.log(data);
+});
 
 
 function newButton(x, y, width, height) {
