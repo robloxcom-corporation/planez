@@ -83,13 +83,13 @@ function newPos(x, y) {
 function updateScore(num) {
   context.beginPath();
   context.fillStyle = "#ffffff";
-  context.fillRect(cover.x, cover.y - canvas.width/100, 5 * canvas.width/2, -4 * canvas.width/125);
+  context.fillRect(cover.x, cover.y + canvas.width/500, 5 * canvas.width/2, -4 * canvas.width/120);
   context.stroke();
 
   context.beginPath();
   context.font = "20px Verdana";
   context.fillStyle = "#ff0000";
-  context.fillText(score, (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + 50, 200);
+  context.fillText(score, (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 200);
   context.stroke();
 };
 
