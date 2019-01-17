@@ -1,12 +1,12 @@
 
-var x = 0;
-var timer;
 var canvas = document.getElementById("gamecanvas");
 var context = canvas.getContext("2d");
 var buttons = {};
 var cover;
 var score = 0000;
+var model;
 var modelJson;
+var stageData = {"typeId":0, "stageId":0};
 var imgDomain = "https://robloxcom-corporation.github.io/planez/assets/sprites/";
 
 
@@ -20,21 +20,14 @@ function init() {
   context.rect(canvas.width/3, canvas.width/5, 2 * canvas.width/3, 2 * canvas.width/3);
   context.stroke();
 
-  context.beginPath();
-  context.fillStyle = "#ff0000ff";
-  var posX = canvas.width/3;
-  var posY = canvas.width/5;
-  var dimention = 2 * canvas.width/3;
-  context.fillRect(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
-  context.stroke();
-  buttons.click = newButton(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
+  drawHitbox();
 
   $.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", function (data) {
     modelJson = data;
   });
   model = new Image();
   model.onload = function() {
-    context.drawImage(this, posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
+    context.drawImage(this, canvas.width/3 + 2 * canvas.width/9, canvas.width/5 + 2 * canvas.width/9, 2 * canvas.width/9 , 2 * canvas.width/9);
   };
   model.src = "assets/sprites/paper/pa1.png";
 
@@ -67,22 +60,23 @@ function newButton(x, y, width, height) {
 };
 
 
+function drawHitbox() {
+  context.beginPath();
+  context.fillStyle = "#ff0000ff";
+  var posX = canvas.width/3;
+  var posY = canvas.width/5;
+  var dimention = 2 * canvas.width/3;
+  context.fillRect(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
+  context.stroke();
+  buttons.click = newButton(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
+};
+
+
 function newPos(x, y) {
   var obj = {};
   obj.x = x;
   obj.y = y;
   return obj;
-};
-
-function cycleModel(type, modelid) {
-  model.src = source;
-};
-
-
-function loop() {
-  draw();
-  x+= .1;
-  timer = setTimeout(loop, 1);
 };
 
 
@@ -102,13 +96,17 @@ function updateScore(num) {
 
 canvas.addEventListener("click", (e) => {
   var mouse = newPos(e.clientX, e.clientY);
-
-  if (buttons.click.checkIntersect(mouse)) {
+    if (buttons.click.checkIntersect(mouse)) {
     score++;
     updateScore(score);
-    model.stage++;
-    if (model.stage == 6) {
-      model.stage = 1;
+
+
+    drawHitbox();
+    model.src = modelJson[stageData.typeId][stageData.stageId].src;
+
+    stageData.stageId++;
+    if (stageData.stageId == 5) {
+      stageData.stageId = 0;
     };
 
 
