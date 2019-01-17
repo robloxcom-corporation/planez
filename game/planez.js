@@ -83,7 +83,7 @@ function newPos(x, y) {
 function updateScore(num) {
   context.beginPath();
   context.fillStyle = "#ffffff";
-  context.fillRect(cover.x, cover.y, 5 * canvas.width/2, -4 * canvas.width/120);
+  context.fillRect(cover.x, cover.y - canvas.width/100, 5 * canvas.width/2, -4 * canvas.width/125);
   context.stroke();
 
   context.beginPath();
