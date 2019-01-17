@@ -6,8 +6,8 @@ var context = canvas.getContext("2d");
 var buttons = {};
 var cover;
 var score = 0000;
-var model;
-var request = new XMLHttpRequest();
+var modelJson;
+var imgDomain = "https://robloxcom-corporation.github.io/planez/assets/sprites/";
 
 
 
@@ -29,7 +29,9 @@ function init() {
   context.stroke();
   buttons.click = newButton(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
 
-//  console.log(getJson());
+  $.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", function (data) {
+    modelJson = data;
+  });
   model = new Image();
   model.onload = function() {
     context.drawImage(this, posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
@@ -45,10 +47,6 @@ function init() {
 
 
 };
-
-$.getJSON("planes.json", function (data) {
-  console.log(data);
-});
 
 
 function newButton(x, y, width, height) {

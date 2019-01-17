@@ -2,29 +2,38 @@
 
 
 	[{
-			"type": "paper",
+      "typeId": 0,
+      "type": "paper",
 			"stageId": 0,
 			"stageName": "pa1",
 			"src": "assets/sprites/paper/pa1.png"
 		},
 		{
+      "typeId": 0,
 			"type": "paper",
 			"stageId": 1,
+      "stageName": "pa2",
 			"src": "assets/sprites/paper/pa2.png"
 		},
 		{
+      "typeId": 0,
 			"type": "paper",
 			"stageId": 2,
+      "stageName": "pa3",
 			"src": "assets/sprites/paper/pa3.png"
 		},
 		{
+      "typeId": 0,
 			"type": "paper",
 			"stageId": 3,
+      "stageName": "pa4",
 			"src": "assets/sprites/paper/pa4.png"
 		},
 		{
+      "typeId": 0,
 			"type": "paper",
 			"stageId": 4,
+      "stageName": "pa5",
 			"src": "assets/sprites/paper/pa5.png"
 		}
 	],
