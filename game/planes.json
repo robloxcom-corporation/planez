@@ -3,11 +3,11 @@
 
 	[
 		{
-      		"typeId": 0,
-      		"type": "paper",
-		"stageId": 0,
-		"stageName": "pa1",
-		"src": "assets/sprites/paper/pa1.png"
+      			"typeId": 0,
+      			"type": "paper",
+			"stageId": 0,
+			"stageName": "pa1",
+			"src": "assets/sprites/paper/pa1.png"
 		},
 		{
       			"typeId": 0,
