@@ -6,7 +6,7 @@ var cover;
 var score = 0000;
 var model;
 var modelJson;
-var stageData = {"typeId":0, "stageId":0};
+var stageData = {"typeId":0, "stageId":1};
 var imgDomain = "https://robloxcom-corporation.github.io/planez/assets/sprites/";
 
 
@@ -95,11 +95,11 @@ function updateScore(num) {
 
 
 canvas.addEventListener("click", (e) => {
-  var mouse = newPos(e.clientX, e.clientY);
+  var mouse = newPos(e.clientX - 7, e.clientY - 7);
+  for (var button in buttons) {
     if (buttons.click.checkIntersect(mouse)) {
     score++;
     updateScore(score);
-
 
     drawHitbox();
     model.src = modelJson[stageData.typeId][stageData.stageId].src;
@@ -108,6 +108,12 @@ canvas.addEventListener("click", (e) => {
     if (stageData.stageId == 5) {
       stageData.stageId = 0;
     };
+
+
+  };
+
+
+
 
 
 
