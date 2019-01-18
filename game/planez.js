@@ -7,7 +7,7 @@ var score = 0000;
 var model;
 var modelJson;
 var stageData = {"typeId":0, "stageId":1};
-var imgDomain = "https://robloxcom-corporation.github.io/planez/assets/sprites/";
+var imgDomain = "https://robloxcom-corporation.github.io/planez/game/assets/sprites/";
 
 
 
@@ -29,7 +29,7 @@ function init() {
   model.onload = function() {
     context.drawImage(this, canvas.width/3 + 2 * canvas.width/9, canvas.width/5 + 2 * canvas.width/9, 2 * canvas.width/9 , 2 * canvas.width/9);
   };
-  model.src = "assets/sprites/paper/pa1.png";
+  model.src = "game/assets/sprites/paper/pa1.png";
 
   context.font = "20px Verdana";
   context.fillStyle = "#ff0000";
