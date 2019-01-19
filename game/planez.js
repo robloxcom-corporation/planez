@@ -8,10 +8,13 @@ var model;
 var modelJson;
 var stageData = {"typeId":0, "stageId":1};
 var imgDomain = "https://robloxcom-corporation.github.io/planez/game/assets/sprites/";
+var runwayModels = new Array(5);
 
 
 
 function init() {
+  drawRunway();
+
   context.fillStyle = "#808080";
   context.fillRect(0, 0, canvas.width, canvas.width/5);
 
@@ -25,11 +28,13 @@ function init() {
   $.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", function (data) {
     modelJson = data;
   });
+
   model = new Image();
   model.onload = function() {
     context.drawImage(this, canvas.width/3 + 2 * canvas.width/9, canvas.width/5 + 2 * canvas.width/9, 2 * canvas.width/9 , 2 * canvas.width/9);
   };
   model.src = "game/assets/sprites/paper/pa1.png";
+
 
   context.font = "20px Verdana";
   context.fillStyle = "#ff0000";
@@ -38,9 +43,21 @@ function init() {
   cover = newPos((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
 
 
-
 };
 
+function drawRunway() {
+  var pos = newPos(0, 0);
+  for (imag in runwayModels) {
+    imag.model = new Image();
+    imag.onload = function() {
+      context.drawImage(this, pos.x, pos.y, 100, 100);
+      pos.x += 100;
+    };
+    imag.src = "game/assets/sprites/runway/runway1.png"
+  };
+
+
+};
 
 function newButton(x, y, width, height) {
   var obj = {};
