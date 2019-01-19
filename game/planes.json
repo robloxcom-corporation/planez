@@ -46,49 +46,49 @@
 			"type": "wood",
 			"stageId": 0,
 			"stageName": "wood1",
-			"src": "game/assets/sprites/wood/wood1"
+			"src": "game/assets/sprites/wood/wood1.png"
 		},
 		{
 			"typeId": 1,
 			"type": "wood",
 			"stageId": 1,
 			"stageName": "wood2",
-			"src": "game/assets/sprites/wood/wood2"
+			"src": "game/assets/sprites/wood/wood2.png"
 		},
 		{
 			"typeId": 1,
 			"type": "wood",
 			"stageId": 2,
 			"stageName": "wood3",
-			"src": "game/assets/sprites/wood/wood3"
+			"src": "game/assets/sprites/wood/wood3.png"
 		},
 		{
 			"typeId": 1,
 			"type": "wood",
 			"stageId": 3,
 			"stageName": "wood4",
-			"src": "game/assets/sprites/wood/wood4"
+			"src": "game/assets/sprites/wood/wood4.png"
 		},
 		{
 			"typeId": 1,
 			"type": "wood",
 			"stageId": 4,
 			"stageName": "wood5",
-			"src": "game/assets/sprites/wood/wood5"
+			"src": "game/assets/sprites/wood/wood5.png"
 		},
 		{
 			"typeId": 1,
 			"type": "wood",
 			"stageId": 5,
 			"stageName": "wood6",
-			"src": "game/assets/sprites/wood/wood6"
+			"src": "game/assets/sprites/wood/wood6.png"
 		},
 		{
 			"typeId": 1,
 			"type": "wood",
 			"stageId": 6,
 			"stageName": "wood7",
-			"src": "game/assets/sprites/wood/wood7"
+			"src": "game/assets/sprites/wood/wood7.png"
 		}
 		
 
