@@ -9,7 +9,7 @@ var modelJson;
 var stageData = {"typeId":0, "stageId":1};
 var imgDomain = "https://robloxcom-corporation.github.io/planez/game/assets/sprites/";
 var runwayModels = new Array(5);
-
+var gameData = {"typeCount": 2}
 
 
 function init() {
@@ -24,6 +24,7 @@ function init() {
   context.stroke();
 
   drawHitbox();
+  drawCycler(0, canvas.width/5, canvas.width/3, canvas.width/10);
 
   $.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", function (data) {
     modelJson = data;
@@ -73,6 +74,7 @@ function newButton(x, y, width, height) {
     };
 
   };
+
   return obj;
 };
 
@@ -87,6 +89,19 @@ function drawHitbox() {
   context.stroke();
   buttons.click = newButton(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
 };
+
+
+function drawCycler (posX, posY, width, height) {
+  context.beginPath();
+  context.fillStyle = "#ff0000ff"
+  context.fillRect(posX, posY, width, height);
+  context.stroke();
+  buttons.cycle = newButton(posX, posY, width, height);
+
+
+
+};
+
 
 
 function newPos(x, y) {
@@ -113,8 +128,8 @@ function updateScore(num) {
 
 canvas.addEventListener("click", (e) => {
   var mouse = newPos(e.clientX - 7, e.clientY - 7);
-  for (var button in buttons) {
-    if (buttons.click.checkIntersect(mouse)) {
+
+  if (buttons.click.checkIntersect(mouse)) {
     score++;
     updateScore(score);
 
@@ -127,6 +142,14 @@ canvas.addEventListener("click", (e) => {
     };
 
 
+  } else if (buttons.cycle.checkIntersect(mouse)) {
+    stageData.typeId++;
+    if (stageData.typeId == 2) {
+      stageData.typeId = 0;
+    };
+    console.log(stageData.typeId);
+
+
   };
 
 
@@ -134,7 +157,7 @@ canvas.addEventListener("click", (e) => {
 
 
 
-  };
+
 
 });
 
