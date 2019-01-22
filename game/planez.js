@@ -8,15 +8,18 @@ var model;
 var modelJson;
 var stageData = {"typeId":0, "stageId":1};
 var imgDomain = "https://robloxcom-corporation.github.io/planez/game/assets/sprites/";
-var runwayModels = new Array(5);
+var runwayModels = [{},{},{},{},{}];
 var gameData = {"typeCount": 2}
 
 
 function init() {
-  drawRunway();
 
+  context.beginPath();
   context.fillStyle = "#808080";
   context.fillRect(0, 0, canvas.width, canvas.width/5);
+  context.stroke();
+
+  drawRunway();
 
   context.beginPath();
   context.lineWidth = "2";
@@ -48,13 +51,18 @@ function init() {
 
 function drawRunway() {
   var pos = newPos(0, 0);
-  for (imag in runwayModels) {
-    imag.model = new Image();
+  for (var i = 0; i < runwayModels.length; i++) {
+    var imag = runwayModels[i];
+    imag = new Image();
     imag.onload = function() {
       context.drawImage(this, pos.x, pos.y, 100, 100);
       pos.x += 100;
     };
-    imag.src = "game/assets/sprites/runway/runway1.png"
+    if (i < runwayModels.length - 1) {
+      imag.src = "game/assets/sprites/runway/runway1.png"
+    } else {
+      imag.src = "game/assets/sprites/runway/runway2.png"
+    };
   };
 
 
@@ -133,21 +141,22 @@ canvas.addEventListener("click", (e) => {
     score++;
     updateScore(score);
 
-    drawHitbox();
-    model.src = modelJson[stageData.typeId][stageData.stageId].src;
-
     stageData.stageId++;
     if (stageData.stageId == 5) {
       stageData.stageId = 0;
     };
+    drawHitbox();
+    model.src = modelJson[stageData.typeId][stageData.stageId].src;
 
 
   } else if (buttons.cycle.checkIntersect(mouse)) {
+    stageData.stageId = 0;
     stageData.typeId++;
     if (stageData.typeId == 2) {
       stageData.typeId = 0;
     };
-    console.log(stageData.typeId);
+    drawHitbox();
+    model.src = modelJson[stageData.typeId][stageData.stageId].src;
 
 
   };
