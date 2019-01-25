@@ -141,29 +141,29 @@ canvas.addEventListener("click", (e) => {
   var mouse = newPos(e.clientX - 7, e.clientY - 7);
 
   if (buttons.click.checkIntersect(mouse)) {
-    if (modelJson.planes[stageData.typeId].length - 1 == stageData.stageId) {
-      score++;
+    if (modelJson[stageData.typeId].planes.length - 1 == stageData.stageId) {
+      score += modelJson[stageData.typeId].data.value;
       updateScore(score);
       };
       stageData.stageId++;
-      if (stageData.stageId == modelJson.planes[stageData.typeId].length) {
+      if (stageData.stageId == modelJson[stageData.typeId].planes.length) {
         stageData.stageId = 0;
 
     };
     drawHitbox();
-    model.src = modelJson.planes[stageData.typeId][stageData.stageId].src;
+    model.src = modelJson[stageData.typeId].planes[stageData.stageId].src;
 
 
   } else if (buttons.paper.checkIntersect(mouse) && stageData.typeId != 0) {
     stageData.stageId = 0;
     stageData.typeId = 0;
     drawHitbox();
-    model.src = modelJson.planes[stageData.typeId][stageData.stageId].src;
+    model.src = modelJson[stageData.typeId].planes[stageData.stageId].src;
   } else if (buttons.wood.checkIntersect(mouse) && stageData.typeId != 1) {
     stageData.stageId = 0;
     stageData.typeId = 1;
     drawHitbox();
-    model.src = modelJson.planes[stageData.typeId][stageData.stageId].src;
+    model.src = modelJson[stageData.typeId].planes[stageData.stageId].src;
 
 
   };

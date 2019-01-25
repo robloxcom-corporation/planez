@@ -48,10 +48,10 @@
 
 	{
 	"data": {
-		"stages": 5,
-		"value": 1,
-		"type": "paper",
-		"typeId": 0
+		"stages": 7,
+		"value": 5,
+		"type": "wood",
+		"typeId": 1
 	},
 
 	"planes": [
