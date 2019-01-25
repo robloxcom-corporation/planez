@@ -6,40 +6,56 @@ var cover;
 var score = 0000;
 var model;
 var modelJson;
-var stageData = {"typeId":0, "stageId":1};
+$.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", function (data) {
+  modelJson = data;
+});
+var stageData = {"typeId":0, "stageId":0};
 var imgDomain = "https://robloxcom-corporation.github.io/planez/game/assets/sprites/";
 var runwayModels = [{},{},{},{},{}];
 var gameData = {"typeCount": 2}
 
 
+
 function init() {
 
+  // runway background
   context.beginPath();
   context.fillStyle = "#808080";
   context.fillRect(0, 0, canvas.width, canvas.width/5);
   context.stroke();
 
+  //runway models
   drawRunway();
 
+  // click area outline and hitbox
   context.beginPath();
   context.lineWidth = "2";
   context.rect(canvas.width/3, canvas.width/5, 2 * canvas.width/3, 2 * canvas.width/3);
   context.stroke();
-
   drawHitbox();
-  drawCycler(0, canvas.width/5, canvas.width/3, canvas.width/10);
 
-  $.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", function (data) {
-    modelJson = data;
-  });
+  // type changer buttons
+  // paper
+  context.beginPath();
+  context.fillStyle = "#ff0000ff"
+  context.fillRect(0, canvas.width/5, canvas.width/3, canvas.width/10);
+  context.stroke();
+  buttons.paper = newButton(0, canvas.width/5, canvas.width/3, canvas.width/10);
+  // wood
+  context.beginPath();
+  context.fillStyle = "#ffaa00ff"
+  context.fillRect(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10);
+  context.stroke();
+  buttons.wood = newButton(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10);
 
+  // draws initial model
   model = new Image();
   model.onload = function() {
     context.drawImage(this, canvas.width/3 + 2 * canvas.width/9, canvas.width/5 + 2 * canvas.width/9, 2 * canvas.width/9 , 2 * canvas.width/9);
   };
   model.src = "game/assets/sprites/paper/pa1.png";
 
-
+  // initial score
   context.font = "20px Verdana";
   context.fillStyle = "#ff0000";
   context.fillText("Score: ", (2 * canvas.width/3) - (2 * canvas.width/6), (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
@@ -99,19 +115,6 @@ function drawHitbox() {
 };
 
 
-function drawCycler (posX, posY, width, height) {
-  context.beginPath();
-  context.fillStyle = "#ff0000ff"
-  context.fillRect(posX, posY, width, height);
-  context.stroke();
-  buttons.cycle = newButton(posX, posY, width, height);
-
-
-
-};
-
-
-
 function newPos(x, y) {
   var obj = {};
   obj.x = x;
@@ -138,25 +141,29 @@ canvas.addEventListener("click", (e) => {
   var mouse = newPos(e.clientX - 7, e.clientY - 7);
 
   if (buttons.click.checkIntersect(mouse)) {
-    score++;
-    updateScore(score);
+    if (modelJson.planes[stageData.typeId].length - 1 == stageData.stageId) {
+      score++;
+      updateScore(score);
+      };
+      stageData.stageId++;
+      if (stageData.stageId == modelJson.planes[stageData.typeId].length) {
+        stageData.stageId = 0;
 
-    stageData.stageId++;
-    if (stageData.stageId == 5) {
-      stageData.stageId = 0;
     };
     drawHitbox();
-    model.src = modelJson[stageData.typeId][stageData.stageId].src;
+    model.src = modelJson.planes[stageData.typeId][stageData.stageId].src;
 
 
-  } else if (buttons.cycle.checkIntersect(mouse)) {
+  } else if (buttons.paper.checkIntersect(mouse) && stageData.typeId != 0) {
     stageData.stageId = 0;
-    stageData.typeId++;
-    if (stageData.typeId == 2) {
-      stageData.typeId = 0;
-    };
+    stageData.typeId = 0;
     drawHitbox();
-    model.src = modelJson[stageData.typeId][stageData.stageId].src;
+    model.src = modelJson.planes[stageData.typeId][stageData.stageId].src;
+  } else if (buttons.wood.checkIntersect(mouse) && stageData.typeId != 1) {
+    stageData.stageId = 0;
+    stageData.typeId = 1;
+    drawHitbox();
+    model.src = modelJson.planes[stageData.typeId][stageData.stageId].src;
 
 
   };
