@@ -15,6 +15,16 @@ var runwayModels = [{},{},{},{},{}];
 var gameData = {"typeCount": 2}
 
 
+// score initializer WIP
+function Score(param) {
+  var score = param;
+  this.get = function() {
+    return score;
+  };
+};
+var secret = new Score(0);
+console.log(secret.get());
+
 
 function init() {
 
