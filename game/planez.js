@@ -70,13 +70,13 @@ function init() {
   context.fillStyle = "#ff0000";
   context.fillText("Score: ", (2 * canvas.width/3) - (2 * canvas.width/6), (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
   context.fillText("0000", (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 2 * canvas.width/5);
-  cover = newPos((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
+  cover = new Pos((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
 
 
 };
 
 function drawRunway() {
-  var pos = newPos(0, 0);
+  var pos = new Pos(0, 0);
   for (var i = 0; i < runwayModels.length; i++) {
     var imag = runwayModels[i];
     imag = new Image();
@@ -125,11 +125,9 @@ function drawHitbox() {
 };
 
 
-function newPos(x, y) {
-  var obj = {};
-  obj.x = x;
-  obj.y = y;
-  return obj;
+function Pos(x, y) {
+  this.x = x;
+  this.y = y;
 };
 
 
@@ -148,7 +146,7 @@ function updateScore(num) {
 
 
 canvas.addEventListener("click", (e) => {
-  var mouse = newPos(e.clientX - 7, e.clientY - 7);
+  var mouse = new Pos(e.clientX - 7, e.clientY - 7);
 
   if (buttons.click.checkIntersect(mouse)) {
     if (modelJson[stageData.typeId].planes.length - 1 == stageData.stageId) {
