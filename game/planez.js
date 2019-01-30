@@ -50,13 +50,13 @@ function init() {
   context.fillStyle = "#ff0000ff"
   context.fillRect(0, canvas.width/5, canvas.width/3, canvas.width/10);
   context.stroke();
-  buttons.paper = newButton(0, canvas.width/5, canvas.width/3, canvas.width/10);
+  buttons.paper = new Button(0, canvas.width/5, canvas.width/3, canvas.width/10);
   // wood
   context.beginPath();
   context.fillStyle = "#ffaa00ff"
   context.fillRect(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10);
   context.stroke();
-  buttons.wood = newButton(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10);
+  buttons.wood = new Button(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10);
 
   // draws initial model
   model = new Image();
@@ -94,13 +94,12 @@ function drawRunway() {
 
 };
 
-function newButton(x, y, width, height) {
-  var obj = {};
-  obj.x = x;
-  obj.y = y;
-  obj.width = width;
-  obj.height = height;
-  obj.checkIntersect = function(mousePos) {
+function Button(x, y, width, height) {
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+  this.checkIntersect = function(mousePos) {
     if ((mousePos.x < this.x + this.width) && (mousePos.x > this.x) && (mousePos.y < this.y + this.height) && (mousePos.y > this.y)) {
       return true
     } else {
@@ -109,7 +108,6 @@ function newButton(x, y, width, height) {
 
   };
 
-  return obj;
 };
 
 
