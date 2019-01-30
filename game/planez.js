@@ -5,10 +5,10 @@ var buttons = {};
 var cover;
 var score = 0000;
 var model;
-var modelJson;
+/* var modelJson;
 $.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", function (data) {
   modelJson = data;
-});
+}); */
 var stageData = {"typeId":0, "stageId":0};
 var imgDomain = "https://robloxcom-corporation.github.io/planez/game/assets/sprites/";
 var runwayModels = [{},{},{},{},{}];
