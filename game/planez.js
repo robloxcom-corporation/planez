@@ -57,6 +57,12 @@ function init() {
   context.fillRect(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10);
   context.stroke();
   buttons.wood = new Button(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10);
+  // cessna
+  context.beginPath();
+  context.fillStyle = "#ff5500ff"
+  context.fillRect(0, canvas.width/5 + canvas.width/10 + canvas.width/10, canvas.width/3, canvas.width/10);
+  context.stroke();
+  buttons.cessna = new Button(0, canvas.width/5 + canvas.width/10 + canvas.width/10, canvas.width/3, canvas.width/10);
 
   // draws initial model
   model = new Image();
@@ -119,7 +125,7 @@ function drawHitbox() {
   var dimention = 2 * canvas.width/3;
   context.fillRect(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
   context.stroke();
-  buttons.click = newButton(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
+  buttons.click = new Button(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
 };
 
 
@@ -170,7 +176,11 @@ canvas.addEventListener("click", (e) => {
     stageData.typeId = 1;
     drawHitbox();
     model.src = modelJson[stageData.typeId].planes[stageData.stageId].src;
-
+  } else if (buttons.cessna.checkIntersect(mouse) && stageData.typeId != 2) {
+    stageData.stageId = 0;
+    stageData.typeId = 2;
+    drawHitbox();
+    model.src = modelJson[stageData.typeId].planes[stageData.stageId].src;
 
   };
 
