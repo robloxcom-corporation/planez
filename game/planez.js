@@ -21,8 +21,17 @@ function Score(param) {
   this.get = function() {
     return score;
   };
+  function inc (value) {
+    score += value;
+  };
+  this.add = function (value) {
+    inc(value);
+  };
 };
+Score.prototype.add = function(value) { inc(value); };
+
 var secret = new Score(0);
+
 console.log(secret.get());
 
 
