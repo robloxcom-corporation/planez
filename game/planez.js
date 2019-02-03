@@ -17,11 +17,11 @@ function Gamestate() {
   var parent = this;
   this.stageId = 0;
   this.typeId = 0;
-  var value = this.value;
   this.updateValue = function() {
     this.value = modelJson[this.typeId].data.value;
   };
   this.value = 000;
+  var value = this.value;
   this.score = new Score(parent);
 };
 
