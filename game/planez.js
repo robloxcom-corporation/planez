@@ -166,7 +166,6 @@ canvas.addEventListener("click", (e) => {
     if (modelJson[gameData.typeId].planes.length - 1 == gameData.stageId) {
       gameData.updateValue();
       gameData.score.inc();
-      console.log(gameData.score.get());
       updateScore(gameData.score.get());
       };
       gameData.stageId++;
