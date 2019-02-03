@@ -3,37 +3,39 @@ var canvas = document.getElementById("gamecanvas");
 var context = canvas.getContext("2d");
 var buttons = {};
 var cover;
-var score = 0000;
 var model;
+var gameData = new Gamestate;
+
 /* var modelJson;
 $.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", function (data) {
   modelJson = data;
 }); */
-var stageData = {"typeId":0, "stageId":0};
 var imgDomain = "https://robloxcom-corporation.github.io/planez/game/assets/sprites/";
 var runwayModels = [{},{},{},{},{}];
-var gameData = {"typeCount": 2}
 
+function Gamestate() {
+  var parent = this;
+  this.stageId = 0;
+  this.typeId = 0;
+  var value = this.value;
+  this.updateValue = function() {
+    this.value = modelJson[this.typeId].data.value;
+  };
+  this.value = 000;
+  this.score = new Score(parent);
+};
 
 // score initializer WIP
-function Score(param) {
-  var score = param;
+function Score(parent) {
+  var score = 0;
   this.get = function() {
     return score;
   };
-  function inc (value) {
-    score += value;
-  };
-  this.add = function (value) {
-    inc(value);
+  this.inc = function() {
+    parent.updateValue();
+    score += parent.value;
   };
 };
-Score.prototype.add = function(value) { inc(value); };
-
-var secret = new Score(0);
-
-console.log(secret.get());
-
 
 function init() {
 
@@ -84,7 +86,7 @@ function init() {
   context.font = "20px Verdana";
   context.fillStyle = "#ff0000";
   context.fillText("Score: ", (2 * canvas.width/3) - (2 * canvas.width/6), (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
-  context.fillText("0000", (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 2 * canvas.width/5);
+  context.fillText(gameData.score.get(), (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 2 * canvas.width/5);
   cover = new Pos((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
 
 
@@ -153,46 +155,46 @@ function updateScore(num) {
   context.beginPath();
   context.font = "20px Verdana";
   context.fillStyle = "#ff0000";
-  context.fillText(score, (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 200);
+  context.fillText(num, (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 200);
   context.stroke();
 };
 
 
 canvas.addEventListener("click", (e) => {
   var mouse = new Pos(e.clientX - 7, e.clientY - 7);
-
   if (buttons.click.checkIntersect(mouse)) {
-    if (modelJson[stageData.typeId].planes.length - 1 == stageData.stageId) {
-      score += modelJson[stageData.typeId].data.value;
-      updateScore(score);
+    if (modelJson[gameData.typeId].planes.length - 1 == gameData.stageId) {
+      gameData.updateValue();
+      gameData.score.inc();
+      console.log(gameData.score.get());
+      updateScore(gameData.score.get());
       };
-      stageData.stageId++;
-      if (stageData.stageId == modelJson[stageData.typeId].planes.length) {
-        stageData.stageId = 0;
+      gameData.stageId++;
+      if (gameData.stageId == modelJson[gameData.typeId].planes.length) {
+        gameData.stageId = 0;
 
     };
     drawHitbox();
-    model.src = modelJson[stageData.typeId].planes[stageData.stageId].src;
+    model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
 
 
-  } else if (buttons.paper.checkIntersect(mouse) && stageData.typeId != 0) {
-    stageData.stageId = 0;
-    stageData.typeId = 0;
+  } else if (buttons.paper.checkIntersect(mouse) && gameData.typeId != 0) {
+    gameData.stageId = 0;
+    gameData.typeId = 0;
     drawHitbox();
-    model.src = modelJson[stageData.typeId].planes[stageData.stageId].src;
-  } else if (buttons.wood.checkIntersect(mouse) && stageData.typeId != 1) {
-    stageData.stageId = 0;
-    stageData.typeId = 1;
+    model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
+  } else if (buttons.wood.checkIntersect(mouse) && gameData.typeId != 1) {
+    gameData.stageId = 0;
+    gameData.typeId = 1;
     drawHitbox();
-    model.src = modelJson[stageData.typeId].planes[stageData.stageId].src;
-  } else if (buttons.cessna.checkIntersect(mouse) && stageData.typeId != 2) {
-    stageData.stageId = 0;
-    stageData.typeId = 2;
+    model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
+  } else if (buttons.cessna.checkIntersect(mouse) && gameData.typeId != 2) {
+    gameData.stageId = 0;
+    gameData.typeId = 2;
     drawHitbox();
-    model.src = modelJson[stageData.typeId].planes[stageData.stageId].src;
+    model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
 
   };
-
 
 
 
