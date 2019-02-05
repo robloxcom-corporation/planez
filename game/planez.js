@@ -7,11 +7,9 @@ var model;
 var gameData = new Gamestate;
 var modelJson
 
-/* var modelJson;
-$.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", function (data) {
-  modelJson = data;
-}); */
 
+
+// XMLHttpRequest to get json data
 var jsonUrl = "https://robloxcom-corporation.github.io/planez/game/planes.json"
 var http = new XMLHttpRequest();
 http.open("GET", jsonUrl, true);
@@ -22,6 +20,11 @@ http.onreadystatechange = function() {
 };
 http.send();
 
+// XMLHttpRequest using Ajax (must link ajax lib in html document)
+/* var modelJson;
+$.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", function (data) {
+  modelJson = data;
+}); */
 
 
 var imgDomain = "https://robloxcom-corporation.github.io/planez/game/assets/sprites/";
@@ -41,13 +44,17 @@ function Gamestate() {
 
 // score initializer WIP
 function Score(parent) {
-  var score = 0;
+  var score = 000;
+  var that = this;
+  this.unlocked = false;
   this.get = function() {
     return score;
   };
   this.inc = function() {
-    parent.updateValue();
-    score += parent.value;
+    if ( that.unlocked ) {
+      parent.updateValue();
+      score += parent.value;
+    };
   };
 };
 
