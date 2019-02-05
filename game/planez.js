@@ -15,13 +15,14 @@ $.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", fun
 var jsonUrl = "https://robloxcom-corporation.github.io/planez/game/planes.json"
 var http = new XMLHttpRequest();
 http.open("GET", jsonUrl, true);
+http.onreadystatechange = function() {
+  if (http.readyState == 4 && http.status == 200) {
+    modelJson = JSON.parse(http.responseText)
+  };
+};
 http.send();
 
-http.onreadystatechange = function() {
-  if (this.readystate == 4 && this.status == 200) {
-    modelJson = http.responseText
-  }
-}
+
 
 var imgDomain = "https://robloxcom-corporation.github.io/planez/game/assets/sprites/";
 var runwayModels = [{},{},{},{},{}];
