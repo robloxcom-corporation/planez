@@ -186,8 +186,7 @@ function updateScore(num) {
 canvas.addEventListener("click", (e) => {
   var mouse = new Pos(e.clientX - 7, e.clientY - 7);
   if (buttons.click.checkIntersect(mouse)) {
-    if (modelJson[gameData.typeId].planes.length - 1 == gameData.stageId) {
-      gameData.updateValue();
+    if (modelJson[gameData.typeId].data.stages == gameData.stageId) {
       gameData.score.inc();
       updateScore(gameData.score.get());
       };
