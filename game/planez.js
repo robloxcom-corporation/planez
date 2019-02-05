@@ -5,11 +5,24 @@ var buttons = {};
 var cover;
 var model;
 var gameData = new Gamestate;
+var modelJson
 
 /* var modelJson;
 $.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", function (data) {
   modelJson = data;
 }); */
+
+var jsonUrl = "https://robloxcom-corporation.github.io/planez/game/planes.json"
+var http = new XMLHttpRequest();
+http.open("GET", jsonUrl, true);
+http.send();
+
+http.onreadystatechange = function() {
+  if (this.readystate == 4 && this.status == 200) {
+    modelJson = http.responseText
+  }
+}
+
 var imgDomain = "https://robloxcom-corporation.github.io/planez/game/assets/sprites/";
 var runwayModels = [{},{},{},{},{}];
 
