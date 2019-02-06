@@ -81,7 +81,7 @@ function init() {
   buttons.paper = new Button(0, canvas.width/5, canvas.width/3, canvas.width/10, "rect");
   buttons.paper.component.color = "#ff0000ff";
   buttons.paper.component.draw();
-  buttons.paper.component.ico = new Component(0, canvas.width/5, canvas.width/3, canvas.width/10, "img");
+  buttons.paper.component.ico = new Component(0, canvas.width/5, canvas.width/3/3, canvas.width/10, "img");
   buttons.paper.component.ico.image_uri = "game/assets/sprites/cessna/cessnasmall.png";
   buttons.paper.component.ico.parent = buttons.paper.component.ico;
   buttons.paper.component.ico.draw();
@@ -173,12 +173,14 @@ function Component(x, y, width, height, type) {
         context.stroke();
         break;
       case "img":
-        var parent = this.parent;
+        var parent = this;
         var imag = new Image();
         imag.onload = function() {
+          // context.drawImage(this, parent.x, parent.y, parent.width, parent.height);
           context.drawImage(this, parent.x, parent.y, parent.width, parent.height);
-        }
-        imag.src = parent.img_uri;
+
+        };
+        imag.src = "game/assets/sprites/cessna/cessnasmall.png";
         break;
       case "text":
         context.beginPath();
@@ -193,6 +195,7 @@ function Component(x, y, width, height, type) {
 
   // meta members
   this.parent;
+  this.image;
   this.img_uri;
   this.color;
   this.font;
