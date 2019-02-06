@@ -52,6 +52,7 @@ function Score(parent) {
   };
   this.inc = function() {
     if ( that.unlocked ) {
+      that.unlocked = false;
       parent.updateValue();
       score += parent.value;
     };
@@ -91,7 +92,7 @@ function init() {
   buttons.wood = new Button(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10);
   // cessna
   context.beginPath();
-  context.fillStyle = "#ff5500ff"
+  context.fillStyle = "#ff5500ff";
   context.fillRect(0, canvas.width/5 + canvas.width/10 + canvas.width/10, canvas.width/3, canvas.width/10);
   context.stroke();
   buttons.cessna = new Button(0, canvas.width/5 + canvas.width/10 + canvas.width/10, canvas.width/3, canvas.width/10);
@@ -186,7 +187,8 @@ function updateScore(num) {
 canvas.addEventListener("click", (e) => {
   var mouse = new Pos(e.clientX - 7, e.clientY - 7);
   if (buttons.click.checkIntersect(mouse)) {
-    if (modelJson[gameData.typeId].data.stages == gameData.stageId) {
+    if (modelJson[gameData.typeId].data.stages - 1 == gameData.stageId) {
+      gameData.score.unlocked = true;
       gameData.score.inc();
       updateScore(gameData.score.get());
       };
