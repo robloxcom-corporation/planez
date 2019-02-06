@@ -6,7 +6,7 @@ var cover;
 var model;
 var gameData = new Gamestate;
 var modelJson
-
+var assets = {};
 
 
 // XMLHttpRequest to get json data
@@ -59,14 +59,13 @@ function Score(parent) {
   };
 };
 
+
 function init() {
 
   // runway background
-  context.beginPath();
-  context.fillStyle = "#808080";
-  context.fillRect(0, 0, canvas.width, canvas.width/5);
-  context.stroke();
-
+  var background = new Component(0, 0, canvas.width, canvas.width/5, "rect");
+  background.color = "#808080";
+  background.draw();
   //runway models
   drawRunway();
 
@@ -79,23 +78,22 @@ function init() {
 
   // type changer buttons
   // paper
-  context.beginPath();
-  context.fillStyle = "#ff0000ff"
-  context.fillRect(0, canvas.width/5, canvas.width/3, canvas.width/10);
-  context.stroke();
-  buttons.paper = new Button(0, canvas.width/5, canvas.width/3, canvas.width/10);
+  buttons.paper = new Button(0, canvas.width/5, canvas.width/3, canvas.width/10, "rect");
+  buttons.paper.component.color = "#ff0000ff";
+  buttons.paper.component.draw();
+  buttons.paper.component.ico = new Component(0, canvas.width/5, canvas.width/3, canvas.width/10, "img");
+  buttons.paper.component.ico.image_uri = "game/assets/sprites/cessna/cessnasmall.png";
+  buttons.paper.component.ico.parent = buttons.paper.component.ico;
+  buttons.paper.component.ico.draw();
+
   // wood
-  context.beginPath();
-  context.fillStyle = "#ffaa00ff"
-  context.fillRect(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10);
-  context.stroke();
-  buttons.wood = new Button(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10);
+  buttons.wood = new Button(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10, "rect");
+  buttons.wood.component.color = "#ffaa00ff";
+  buttons.wood.component.draw();
   // cessna
-  context.beginPath();
-  context.fillStyle = "#ff5500ff";
-  context.fillRect(0, canvas.width/5 + canvas.width/10 + canvas.width/10, canvas.width/3, canvas.width/10);
-  context.stroke();
-  buttons.cessna = new Button(0, canvas.width/5 + canvas.width/10 + canvas.width/10, canvas.width/3, canvas.width/10);
+  buttons.cessna = new Button(0, canvas.width/5 + canvas.width/10 + canvas.width/10, canvas.width/3, canvas.width/10, "rect");
+  buttons.cessna.component.color = "#ff5500ff";
+  buttons.cessna.component.draw();
 
   // draws initial model
   model = new Image();
@@ -105,11 +103,29 @@ function init() {
   model.src = "game/assets/sprites/paper/pa1.png";
 
   // initial score
-  context.font = "20px Verdana";
-  context.fillStyle = "#ff0000";
-  context.fillText("Score: ", (2 * canvas.width/3) - (2 * canvas.width/6), (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
-  context.fillText(gameData.score.get(), (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 2 * canvas.width/5);
-  cover = new Pos((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
+  assets.score_title = new Component((2 * canvas.width/3) - (2 * canvas.width/6), (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
+  assets.score_title.type = "text";
+  assets.score_title.font = "20px Verdana";
+  assets.score_title.color = "#ff0000";
+  assets.score_title.text = "Score: "
+  assets.score_title.draw();
+
+  assets.score_value = new Component((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
+  assets.score_value.type = "text";
+  assets.score_value.font = "20px Verdana";
+  assets.score_value.color = "#ff0000";
+  assets.score_value.text = gameData.score.get();
+  assets.score_value.draw();
+
+  assets.score_value.cover = new Component(
+    (2 * canvas.width/3) - (2 * canvas.width/6) + 100,
+    (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10,
+    5 * canvas.width/2,
+    -4 * canvas.width/120,
+    "rect"
+  );
+  assets.score_value.cover.color = "#ffffff";
+  cover = new Pos((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 5 * canvas.width/2, -4 * canvas.width/120);
 
 
 };
@@ -133,13 +149,65 @@ function drawRunway() {
 
 };
 
-function Button(x, y, width, height) {
+
+function Component(x, y, width, height, type) {
   this.x = x;
   this.y = y;
   this.width = width;
   this.height = height;
+  this.type = type
+  this.draw = function() {
+    switch (this.type) {
+      case "rect":
+        context.beginPath();
+        context.fillStyle = this.color;
+        context.lineWidth = "0px";
+        context.fillRect(this.x, this.y, this.width, this.height);
+        context.stroke();
+        break;
+      case "outline":
+        context.beginPath();
+        context.fillStyle = color;
+        context.lineWidth = "2px";
+        context.rect(this.x, this.y, this.width, this.height);
+        context.stroke();
+        break;
+      case "img":
+        var parent = this.parent;
+        var imag = new Image();
+        imag.onload = function() {
+          context.drawImage(this, parent.x, parent.y, parent.width, parent.height);
+        }
+        imag.src = parent.img_uri;
+        break;
+      case "text":
+        context.beginPath();
+        context.fillStyle = this.color;
+        context.font = this.font;
+        context.fillText(this.text, this.x, this.y, this.width, this.height)
+        context.stroke();
+        break;
+
+    }
+  }
+
+  // meta members
+  this.parent;
+  this.img_uri;
+  this.color;
+  this.font;
+  this.text;
+
+};
+
+
+function Button(x, y, width, height, color) {
+  this.component = new Component(x, y, width, height, color, "rect");
   this.checkIntersect = function(mousePos) {
-    if ((mousePos.x < this.x + this.width) && (mousePos.x > this.x) && (mousePos.y < this.y + this.height) && (mousePos.y > this.y)) {
+    if ((mousePos.x < this.component.x + this.component.width)
+    && (mousePos.x > this.component.x)
+    && (mousePos.y < this.component.y + this.component.height)
+    && (mousePos.y > this.component.y)) {
       return true
     } else {
       return false
@@ -158,7 +226,7 @@ function drawHitbox() {
   var dimention = 2 * canvas.width/3;
   context.fillRect(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
   context.stroke();
-  buttons.click = new Button(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
+  buttons.click = new Button(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3, "#ff0000");
 };
 
 
@@ -170,16 +238,11 @@ function Pos(x, y) {
 
 function updateScore(num) {
   if (num == gameData.score.get()) {
-    context.beginPath();
-    context.fillStyle = "#ffffff";
-    context.fillRect(cover.x, cover.y + canvas.width/500, 5 * canvas.width/2, -4 * canvas.width/120);
-    context.stroke();
 
-    context.beginPath();
-    context.font = "20px Verdana";
-    context.fillStyle = "#ff0000";
-    context.fillText(num, (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 200);
-    context.stroke();
+    assets.score_value.cover.draw();
+    assets.score_value.text = num;
+    assets.score_value.draw();
+    // (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 200
   };
 };
 
