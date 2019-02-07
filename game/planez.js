@@ -6,9 +6,9 @@ var cover;
 var model;
 var gameData = new Gamestate;
 var modelJson
-var assets = {};
-
-
+var assets = { plane_models:[], runway_models:[{},{},{},{},{}] };
+const planeEvent = new Event("plane_models_change");
+var score_data = {}
 // XMLHttpRequest to get json data
 var jsonUrl = "https://robloxcom-corporation.github.io/planez/game/planes.json"
 var http = new XMLHttpRequest();
@@ -26,9 +26,6 @@ $.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", fun
   modelJson = data;
 }); */
 
-
-var imgDomain = "https://robloxcom-corporation.github.io/planez/game/assets/sprites/";
-var runwayModels = [{},{},{},{},{}];
 
 function Gamestate() {
   var parent = this;
@@ -66,7 +63,9 @@ function init() {
   var background = new Component(0, 0, canvas.width, canvas.width/5, "rect");
   background.color = "#808080";
   background.draw();
+
   //runway models
+  setupRunway();
   drawRunway();
 
   // click area outline and hitbox
@@ -136,48 +135,28 @@ function init() {
   model.src = "game/assets/sprites/paper/pa1.png";
 
   // initial score
-  assets.score_title = new Component((2 * canvas.width/3) - (2 * canvas.width/6), (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
-  assets.score_title.type = "text";
-  assets.score_title.font = "20px Verdana";
-  assets.score_title.color = "#ff0000";
-  assets.score_title.text = "Score: "
-  assets.score_title.draw();
+  score_data.score_title = new Component((2 * canvas.width/3) - (2 * canvas.width/6), (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
+  score_data.score_title.type = "text";
+  score_data.score_title.font = "20px Verdana";
+  score_data.score_title.color = "#ff0000";
+  score_data.score_title.text = "Score: "
+  score_data.score_title.draw();
 
-  assets.score_value = new Component((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
-  assets.score_value.type = "text";
-  assets.score_value.font = "20px Verdana";
-  assets.score_value.color = "#ff0000";
-  assets.score_value.text = gameData.score.get();
-  assets.score_value.draw();
+  score_data.score_value = new Component((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
+  score_data.score_value.type = "text";
+  score_data.score_value.font = "20px Verdana";
+  score_data.score_value.color = "#ff0000";
+  score_data.score_value.text = gameData.score.get();
+  score_data.score_value.draw();
 
-  assets.score_value.cover = new Component(
+  score_data.score_value.cover = new Component(
     (2 * canvas.width/3) - (2 * canvas.width/6) + 100,
     (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10,
     5 * canvas.width/2,
     -4 * canvas.width/120,
     "rect"
   );
-  assets.score_value.cover.color = "#ffffff";
-  cover = new Pos((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 5 * canvas.width/2, -4 * canvas.width/120);
-
-
-};
-
-function drawRunway() {
-  var pos = new Pos(0, 0);
-  for (var i = 0; i < runwayModels.length; i++) {
-    var imag = runwayModels[i];
-    imag = new Image();
-    imag.onload = function() {
-      context.drawImage(this, pos.x, pos.y, 100, 100);
-      pos.x += 100;
-    };
-    if (i < runwayModels.length - 1) {
-      imag.src = "game/assets/sprites/runway/runway1.png"
-    } else {
-      imag.src = "game/assets/sprites/runway/runway2.png"
-    };
-  };
+  score_data.score_value.cover.color = "#ffffff";
 
 
 };
@@ -188,7 +167,7 @@ function Component(x, y, width, height, type) {
   this.y = y;
   this.width = width;
   this.height = height;
-  this.type = type
+  this.type = type;
   this.draw = function() {
     switch (this.type) {
       case "rect":
@@ -221,17 +200,33 @@ function Component(x, y, width, height, type) {
         context.fillText(this.text, this.x, this.y, this.width, this.height)
         context.stroke();
         break;
+    };
+  };
 
-    }
-  }
+  this.clear = function() {
+    if (this.clearColor) {
+      context.beginPath();
+      context.fillStyle = this.fillColor;
+      context.lineWidth = "0px";
+      context.fillRect(this.x, this.y, this.width, this.height);
+      context.stroke();
+    } else {
+      context.beginPath();
+      context.lineWidth = "0px";
+      context.clearRect(this.x, this.y, this.width, this.height);
+      context.stroke();
+    };
+  };
 
   // meta members
   this.parent;
   this.image;
   this.img_uri;
   this.color;
+  this.clearColor;
   this.font;
   this.text;
+  this.debugId;
 
 };
 
@@ -250,6 +245,28 @@ function Button(x, y, width, height, color) {
 
   };
 
+};
+
+
+function setupRunway() {
+  for (var i = 0; i < 5; i++) {
+    assets.runway_models[i] = new Component(canvas.width/5 * i, 0, canvas.width/5, canvas.width/5, "img");
+    assets.runway_models[i].debugId = "runway" + i;
+    if (i < assets.runway_models.length - 1) {
+      assets.runway_models[i].image_uri = "game/assets/sprites/runway/runway1.png"
+    } else {
+      assets.runway_models[i].image_uri = "game/assets/sprites/runway/runway2.png"
+    };
+
+  };
+
+};
+
+
+function drawRunway() {
+    for (var i = 0; i < 5; i++) {
+      assets.runway_models[i].draw();
+    };
 };
 
 
@@ -274,9 +291,9 @@ function Pos(x, y) {
 function updateScore(num) {
   if (num == gameData.score.get()) {
 
-    assets.score_value.cover.draw();
-    assets.score_value.text = num;
-    assets.score_value.draw();
+    score_data.score_value.cover.draw();
+    score_data.score_value.text = num;
+    score_data.score_value.draw();
     // (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 200
   };
 };
@@ -285,20 +302,25 @@ function updateScore(num) {
 canvas.addEventListener("click", (e) => {
   var mouse = new Pos(e.clientX - 7, e.clientY - 7);
   if (buttons.click.checkIntersect(mouse)) {
-    if (modelJson[gameData.typeId].data.stages - 1 == gameData.stageId) {
+    gameData.stageId++;
+    if (modelJson[gameData.typeId].data.stages == gameData.stageId) { // if intersect with main button
       gameData.score.unlocked = true;
       gameData.score.inc();
       updateScore(gameData.score.get());
-      };
-      gameData.stageId++;
-      if (gameData.stageId == modelJson[gameData.typeId].planes.length) {
-        gameData.stageId = 0;
+      var img = new Component(canvas.width, Math.random() * 50 + 25, canvas.width/20, canvas.width/20, "img");
+      img.image_uri = "assets/sprites/cessna/cessnasmall.png"
+      img.parent = img;
+      assets.plane_models.push(img)
+      // canvas.dispatchEvent(planeEvent);
 
+    };
+    if (gameData.stageId >= modelJson[gameData.typeId].data.stages) {
+      gameData.stageId = 0;
     };
     drawHitbox();
     model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
 
-
+  // if intertsect with other buttons
   } else if (buttons.paper.checkIntersect(mouse) && gameData.typeId != 0) {
     gameData.stageId = 0;
     gameData.typeId = 0;
@@ -326,4 +348,30 @@ canvas.addEventListener("click", (e) => {
 });
 
 
+function animateRunway() {
+  for(var i = 0; i < assets.runway_models.length; i++) {
+    assets.runway_models[i].clear();
+  };
+  for(var i = 0; i < assets.runway_models.length; i++) {
+    assets.runway_models[i].draw();
+  };
+  for (var i = 0; i < assets.plane_models.length; i++) {
+    assets.plane_models[i].draw();
+    assets.plane_models[i].x -= 10;
+    if (assets.plane_models[i].x < 10) {
+      assets.plane_models.shift();
+    };
+
+  };
+
+  if (assets.plane_models != 0) {
+    window.requestAnimationFrame( animateRunway() );
+  };
+
+};
+
 window.onload = init();
+
+canvas.addEventListener("plane_models_change", function() {
+  window.requestAnimationFrame( animateRunway() );
+});
