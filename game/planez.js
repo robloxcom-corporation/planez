@@ -79,21 +79,54 @@ function init() {
   // type changer buttons
   // paper
   buttons.paper = new Button(0, canvas.width/5, canvas.width/3, canvas.width/10, "rect");
-  buttons.paper.component.color = "#ff0000ff";
+  buttons.paper.component.color = "#ff0000";
   buttons.paper.component.draw();
+
   buttons.paper.component.ico = new Component(0, canvas.width/5, canvas.width/3/3, canvas.width/10, "img");
-  buttons.paper.component.ico.image_uri = "game/assets/sprites/cessna/cessnasmall.png";
+  buttons.paper.component.ico.image_uri = "game/assets/sprites/paper/smallpa.png";
   buttons.paper.component.ico.parent = buttons.paper.component.ico;
   buttons.paper.component.ico.draw();
 
+  buttons.paper.component.title = new Component(canvas.width/6, canvas.width/5 + canvas.width/10/2 + canvas.width/10/10, canvas.width/3/3, canvas.width/10, "text");
+  buttons.paper.component.title.text = "Paper";
+  buttons.paper.component.title.color = "#ffffff";
+  buttons.paper.component.title.font = "20px Verdana";
+  buttons.paper.component.title.draw();
+
   // wood
   buttons.wood = new Button(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10, "rect");
-  buttons.wood.component.color = "#ffaa00ff";
+  buttons.wood.component.color = "#ffaa00";
   buttons.wood.component.draw();
+
+  buttons.wood.component.ico = new Component(0, canvas.width/5 + canvas.width/10, canvas.width/3/3, canvas.width/10, "img");
+  buttons.wood.component.ico.image_uri = "game/assets/sprites/wood/woodsmall.png";
+  buttons.wood.component.ico.parent = buttons.wood.component.ico;
+  buttons.wood.component.ico.draw();
+
+  buttons.wood.component.title = new Component(canvas.width/6, canvas.width/5 + canvas.width/10/2 + canvas.width/10/10 + canvas.width/10, canvas.width/3/3, canvas.width/10, "text");
+  buttons.wood.component.title.text = "Balsamic";
+  buttons.wood.component.title.color = "#ffffff";
+  buttons.wood.component.title.font = "20px Verdana";
+  buttons.wood.component.title.draw();
+
+
   // cessna
   buttons.cessna = new Button(0, canvas.width/5 + canvas.width/10 + canvas.width/10, canvas.width/3, canvas.width/10, "rect");
-  buttons.cessna.component.color = "#ff5500ff";
+  buttons.cessna.component.color = "#ff5500";
   buttons.cessna.component.draw();
+
+  buttons.cessna.component.ico = new Component(0, canvas.width/5 + 2 * canvas.width/10, canvas.width/3/3, canvas.width/10, "img");
+  buttons.cessna.component.ico.image_uri = "game/assets/sprites/cessna/cessnasmall.png";
+  buttons.cessna.component.ico.parent = buttons.cessna.component.ico;
+  buttons.cessna.component.ico.draw();
+
+  buttons.cessna.component.title = new Component(canvas.width/6, canvas.width/5 + canvas.width/10/2 + canvas.width/10/10 + 2 * canvas.width/10, canvas.width/3/3, canvas.width/10, "text");
+  buttons.cessna.component.title.text = "Cessna";
+  buttons.cessna.component.title.color = "#ffffff";
+  buttons.cessna.component.title.font = "20px Verdana";
+  buttons.cessna.component.title.draw();
+
+
 
   // draws initial model
   model = new Image();
@@ -174,13 +207,12 @@ function Component(x, y, width, height, type) {
         break;
       case "img":
         var parent = this;
-        var imag = new Image();
-        imag.onload = function() {
-          // context.drawImage(this, parent.x, parent.y, parent.width, parent.height);
+        this.image = new Image();
+        this.image.onload = function() {
           context.drawImage(this, parent.x, parent.y, parent.width, parent.height);
 
         };
-        imag.src = "game/assets/sprites/cessna/cessnasmall.png";
+        this.image.src = parent.image_uri;
         break;
       case "text":
         context.beginPath();
