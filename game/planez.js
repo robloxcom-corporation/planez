@@ -310,7 +310,7 @@ canvas.addEventListener("click", (e) => {
       gameData.score.unlocked = true;
       gameData.score.inc();
       updateScore(gameData.score.get());
-      var img = new Component(canvas.width, Math.random() * 50 + 10, canvas.width/20, canvas.width/20, "img");
+      var img = new Component(canvas.width, Math.random() * 50, canvas.width/10, canvas.width/10, "img");
       img.image_uri = modelJson[gameData.typeId].data.src_small;
       img.parent = img;
       assets.plane_models.push(img)
