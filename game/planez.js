@@ -368,7 +368,7 @@ function animateRunway(timestamp) {
   };
   if (assets.plane_models != 0) {
     window.requestAnimationFrame( animateRunway );
-  } // else { looping = false }; experienced higher performance without this line (for unknown reason)
+  } else { looping = false }; // experienced higher performance without this line (for unknown reason)
 
 };
 
