@@ -361,7 +361,7 @@ function animateRunway(timestamp) {
     assets.plane_models[i].timestamp_progress = timestamp - assets.plane_models[i].timestamp_start;
     assets.plane_models[i].draw();
     assets.plane_models[i].x = canvas.width - ( .1 * assets.plane_models[i].timestamp_progress);
-    if (assets.plane_models[i].x < -30) {
+    if (assets.plane_models[i].x < -35) {
       assets.plane_models.shift();
     };
 
