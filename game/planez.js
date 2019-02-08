@@ -226,6 +226,8 @@ function Component(x, y, width, height, type) {
   this.clearColor;
   this.font;
   this.text;
+  this.timestamp_start;
+  this.timestamp_progress;
   this.debugId;
 
 };
@@ -307,11 +309,11 @@ canvas.addEventListener("click", (e) => {
       gameData.score.unlocked = true;
       gameData.score.inc();
       updateScore(gameData.score.get());
-      var img = new Component(canvas.width, Math.random() * 50 + 25, canvas.width/20, canvas.width/20, "img");
-      img.image_uri = "assets/sprites/cessna/cessnasmall.png"
+      var img = new Component(canvas.width, Math.random() * 50 + 10, canvas.width/20, canvas.width/20, "img");
+      img.image_uri = "game/assets/sprites/cessna/cessnasmall.png"
       img.parent = img;
       assets.plane_models.push(img)
-      // canvas.dispatchEvent(planeEvent);
+      canvas.dispatchEvent(planeEvent);
 
     };
     if (gameData.stageId >= modelJson[gameData.typeId].data.stages) {
@@ -348,24 +350,22 @@ canvas.addEventListener("click", (e) => {
 });
 
 
-function animateRunway() {
-  for(var i = 0; i < assets.runway_models.length; i++) {
-    assets.runway_models[i].clear();
-  };
+function animateRunway(timestamp) {
   for(var i = 0; i < assets.runway_models.length; i++) {
     assets.runway_models[i].draw();
   };
   for (var i = 0; i < assets.plane_models.length; i++) {
+    if ( !assets.plane_models[i].timestamp_start ) { assets.plane_models[i].timestamp_start = timestamp };
+    assets.plane_models[i].timestamp_progress = timestamp - assets.plane_models[i].timestamp_start;
     assets.plane_models[i].draw();
-    assets.plane_models[i].x -= 10;
-    if (assets.plane_models[i].x < 10) {
+    assets.plane_models[i].x = canvas.width - ( .1 * assets.plane_models[i].timestamp_progress);
+    if (assets.plane_models[i].x < -30) {
       assets.plane_models.shift();
     };
 
   };
-
   if (assets.plane_models != 0) {
-    window.requestAnimationFrame( animateRunway() );
+    window.requestAnimationFrame( animateRunway );
   };
 
 };
@@ -373,5 +373,5 @@ function animateRunway() {
 window.onload = init();
 
 canvas.addEventListener("plane_models_change", function() {
-  window.requestAnimationFrame( animateRunway() );
+  window.requestAnimationFrame( animateRunway );
 });
