@@ -5,7 +5,8 @@ var buttons = {};
 var cover;
 var model;
 var gameData = new Gamestate;
-var modelJson
+var modelJson;
+var looping = false;
 var assets = { plane_models:[], runway_models:[{},{},{},{},{}] };
 const planeEvent = new Event("plane_models_change");
 var score_data = {}
@@ -313,7 +314,8 @@ canvas.addEventListener("click", (e) => {
       img.image_uri = "game/assets/sprites/cessna/cessnasmall.png"
       img.parent = img;
       assets.plane_models.push(img)
-      canvas.dispatchEvent(planeEvent);
+      if (!looping) { canvas.dispatchEvent(planeEvent) };
+      // canvas.dispatchEvent(planeEvent);
 
     };
     if (gameData.stageId >= modelJson[gameData.typeId].data.stages) {
@@ -351,6 +353,8 @@ canvas.addEventListener("click", (e) => {
 
 
 function animateRunway(timestamp) {
+  console.log("frame")
+  looping = true;
   for(var i = 0; i < assets.runway_models.length; i++) {
     assets.runway_models[i].draw();
   };
@@ -366,7 +370,7 @@ function animateRunway(timestamp) {
   };
   if (assets.plane_models != 0) {
     window.requestAnimationFrame( animateRunway );
-  };
+  } else { looping = false };
 
 };
 
@@ -374,4 +378,5 @@ window.onload = init();
 
 canvas.addEventListener("plane_models_change", function() {
   window.requestAnimationFrame( animateRunway );
+  console.log("debug")
 });
