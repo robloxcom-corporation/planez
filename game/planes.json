@@ -5,7 +5,8 @@
 				"stages": 5,
 				"value": 1,
 				"type": "paper",
-				"typeId": 0
+				"typeId": 0,
+				"src_small": "game/assets/sprites/paper/smallpa.png"
 			},
 			"planes": [
 				{
@@ -51,7 +52,8 @@
 				"stages": 7,
 				"value": 5,
 				"type": "wood",
-				"typeId": 1
+				"typeId": 1,
+				"src_small": "game/assets/sprites/wood/woodsmall.png"
 			},
 
 			"planes": [
@@ -113,7 +115,8 @@
 					"stages": 10,
 					"value": 10,
 					"type": "cessna",
-					"typeId": 2
+					"typeId": 2,
+					"src_small": "game/assets/sprites/cessna/cessnasmall.png"
 				},
 				"planes": [
 					{
