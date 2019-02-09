@@ -9,7 +9,7 @@ var modelJson;
 var looping = false;
 var assets = { plane_models:[], runway_models:[{},{},{},{},{}] };
 const planeEvent = new Event("plane_models_change");
-const moneyEvent = new Event("money_inc");
+const cashEvent = new Event("cash_inc");
 var score_data = {}
 // XMLHttpRequest to get json data
 var jsonUrl = "https://robloxcom-corporation.github.io/planez/game/planes.json"
@@ -39,7 +39,7 @@ function Gamestate() {
   this.value = 000;
   var value = this.value;
   this.score = new Score(parent);
-  this.money = new Cash(parent);
+  this.cash = new Cash(parent);
 };
 
 // score initializer WIP
@@ -55,8 +55,8 @@ function Score(parent) {
       that.unlocked = false;
       parent.updateValue();
       score += parent.value;
-      gameData.money.unlocked = true;
-      canvas.dispatchEvent( moneyEvent );
+      gameData.cash.unlocked = true;
+      canvas.dispatchEvent( cashEvent );
     };
   };
 };
@@ -68,7 +68,10 @@ function Cash(parent) {
   this.get = function() {
     return cash;
   };
-  canvas.addEventListener("money_inc", function() {
+  this.dec = function(val_) {
+    cash -= val_;
+  }
+  canvas.addEventListener("cash_inc", function() {
     if ( that.unlocked ) {
       that.unlocked = false;
       parent.updateValue();
@@ -101,19 +104,31 @@ function init() {
   // type changer buttons
   // paper
   buttons.paper = new Button(0, canvas.width/5, canvas.width/3, canvas.width/10, "rect");
+  buttons.paper.value = 0;
   buttons.paper.component.color = "#ff0000";
   buttons.paper.component.draw();
 
   buttons.paper.component.ico = new Component(0, canvas.width/5, canvas.width/3/3, canvas.width/10, "img");
   buttons.paper.component.ico.image_uri = "game/assets/sprites/paper/smallpa.png";
   buttons.paper.component.ico.parent = buttons.paper.component.ico;
-  buttons.paper.component.ico.draw();
+
+  buttons.paper.component.lock = new Component(0, canvas.width/5, canvas.width/3/3, canvas.width/10, "img");
+  buttons.paper.component.lock.image_uri = "game/assets/sprites/lock.png";
+  buttons.paper.component.lock.parent = buttons.paper.component.lock;
+  buttons.paper.component.lock.draw();
 
   buttons.paper.component.title = new Component(canvas.width/6, canvas.width/5 + canvas.width/10/2 + canvas.width/10/10, canvas.width/3/3, canvas.width/10, "text");
   buttons.paper.component.title.text = "Paper";
   buttons.paper.component.title.color = "#ffffff";
   buttons.paper.component.title.font = "20px Verdana";
-  buttons.paper.component.title.draw();
+
+  buttons.paper.component.value = new Component(canvas.width/8, canvas.width/5 + canvas.width/10/2 + canvas.width/10/10, canvas.width/3/2, canvas.width/10, "text");
+  buttons.paper.component.value.text = "Locked: $" + buttons.paper.value;
+  buttons.paper.component.value.color = "#ffffff";
+  buttons.paper.component.value.font = "20px Verdana";
+  buttons.paper.component.value.draw();
+
+  buttons.paper.component.clear();
 
   // wood
   buttons.wood = new Button(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10, "rect");
@@ -155,7 +170,7 @@ function init() {
   model.onload = function() {
     context.drawImage(this, canvas.width/3 + 2 * canvas.width/9, canvas.width/5 + 2 * canvas.width/9, 2 * canvas.width/9 , 2 * canvas.width/9);
   };
-  model.src = "game/assets/sprites/paper/pa1.png";
+  // model.src = "game/assets/sprites/paper/pa1.png";
 
   // initial score
   score_data.score_title = new Component((2 * canvas.width/3) - (2 * canvas.width/6), (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
@@ -229,7 +244,7 @@ function Component(x, y, width, height, type) {
   this.clear = function() {
     if (this.clearColor) {
       context.beginPath();
-      context.fillStyle = this.fillColor;
+      context.fillStyle = this.clearColor;
       context.lineWidth = "0px";
       context.fillRect(this.x, this.y, this.width, this.height);
       context.stroke();
@@ -258,6 +273,7 @@ function Component(x, y, width, height, type) {
 
 function Button(x, y, width, height, color) {
   this.component = new Component(x, y, width, height, color, "rect");
+  this.component.clearColor = "#60606080";
   this.checkIntersect = function(mousePos) {
     if ((mousePos.x < this.component.x + this.component.width)
     && (mousePos.x > this.component.x)
@@ -267,8 +283,19 @@ function Button(x, y, width, height, color) {
     } else {
       return false
     };
+  };
+  this.buy = function() {
+    if (this.buyable && !this.purchased && gameData.cash.get() >= this.value) {
+      gameData.cash.dec(this.value);
+
+    };
 
   };
+
+  // meta members
+  this.value;
+  this.buyable;
+  this.purchased;
 
 };
 
@@ -346,11 +373,23 @@ canvas.addEventListener("click", (e) => {
     model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
 
   // if intertsect with other buttons
-  } else if (buttons.paper.checkIntersect(mouse) && gameData.typeId != 0) {
-    gameData.stageId = 0;
-    gameData.typeId = 0;
-    drawHitbox();
-    model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
+  //paper
+  } else if (buttons.paper.checkIntersect(mouse)) {
+    if (buttons.paper.purchased && gameData.typeId != 0) { // usual behavior
+      gameData.stageId = 0;
+      gameData.typeId = 0;
+      drawHitbox();
+      model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
+    } else if (!buttons.paper.purchased && gameData.cash.get() >= buttons.paper.value) { // purchase behavior
+      buttons.paper.component.draw();
+      buttons.paper.component.ico.draw();
+      buttons.paper.component.title.draw();
+      buttons.paper.purchased = true;
+      gameData.typeId = 0;
+      gameData.stageId = 0;
+      model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
+      gameData.cash.dec(buttons.paper.value);
+    };
   } else if (buttons.wood.checkIntersect(mouse) && gameData.typeId != 1) {
     gameData.stageId = 0;
     gameData.typeId = 1;
