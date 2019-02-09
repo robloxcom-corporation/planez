@@ -33,7 +33,7 @@ $.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", fun
 function Gamestate() {
   var parent = this;
   this.stageId = 0;
-  this.typeId = 0;
+  this.typeId = -1;
   this.updateValue = function() {
     this.value = modelJson[this.typeId].data.value;
   };
@@ -341,6 +341,7 @@ function drawHitbox() {
   context.fillRect(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
   context.stroke();
   click = new Button(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3, "#ff0000");
+  click.init();
 };
 
 
@@ -363,7 +364,7 @@ function updateScore(num) {
 
 canvas.addEventListener("click", (e) => {
   var mouse = new Pos(e.clientX - 7, e.clientY - 7);
-  if (click.checkIntersect(mouse)) {
+  if (click.checkIntersect(mouse) && gameData.typeId != -1) {
     gameData.stageId++;
     if (modelJson[gameData.typeId].data.stages == gameData.stageId) { // if intersect with main button
       gameData.score.unlocked = true;
@@ -383,48 +384,41 @@ canvas.addEventListener("click", (e) => {
     model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
 
   // if intertsect with other buttons
-  //paper
-  } else if (buttons.paper.checkIntersect(mouse)) {
-    if (buttons.paper.purchased && gameData.typeId != 0) { // usual behavior
-      gameData.stageId = 0;
-      gameData.typeId = 0;
-      drawHitbox();
-      model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
-    } else if (!buttons.paper.purchased && gameData.cash.get() >= buttons.paper.cost) { // purchase behavior
-      buttons.paper.component.draw();
-      buttons.paper.component.ico.draw();
-      buttons.paper.component.title.draw();
-      buttons.paper.purchased = true;
-      gameData.typeId = 0;
-      gameData.stageId = 0;
-      model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
-      gameData.cash.dec(buttons.paper.cost);
-    };
-  //wood
-  } else if (buttons.wood.checkIntersect(mouse)) {
-    if (buttons.wood.purchased && gameData.typeId != 1) {
-      gameData.stageId = 0;
-      gameData.typeId = 1;
-      drawHitbox();
-      model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
-    } else if ( !buttons.wood.purchased && gameData.cash.get() >= buttons.wood.cost ) {
-      buttons.wood.component.draw();
-      buttons.wood.component.ico.draw();
-      buttons.wood.component.title.draw();
-      buttons.wood.purchased = true;
-      gameData.typeId = 1;
-      gameData.stageId = 0;
-      model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
-      gameData.cash.dec(buttons.wood.cost);
-    };
-  } else if (buttons.cessna.checkIntersect(mouse) && gameData.typeId != 2) {
-    gameData.stageId = 0;
-    gameData.typeId = 2;
-    drawHitbox();
-    model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
+  } else {
+    for (var i = 0; i < Object.keys(buttons).length; i++) {
+      function getType() {
+        switch (i) {
+          case 0:
+            return {id: 0, name: modelJson[i].data.type, obj: buttons.paper};
+          case 1:
+            return {id: 1, name: modelJson[i].data.type, obj: buttons.wood};
+          case 2:
+            return {id: 3, name: modelJson[i].data.type, obj: buttons.cessna};
+        };
+      };
+      var button = getType().obj;
 
+      if (button.checkIntersect(mouse)) {
+        if (button.purchased && gameData.typeId != i) { // usual behavior
+          gameData.typeId = i;
+          gameData.stageId = 0;
+          drawHitbox();
+          model.src = modelJson[i].planes[gameData.stageId].src;
+
+        } else if (!button.purchased && gameData.cash.get() >= button.cost) { // purchase behavior
+          button.component.draw();
+          button.component.ico.draw();
+          button.component.title.draw();
+          button.purchased = true;
+          gameData.typeId = i;
+          gameData.stageId = 0;
+          drawHitbox();
+          model.src = modelJson[i].planes[gameData.stageId].src;
+          gameData.cash.dec(buttons.paper.cost);
+        };
+      };
+    };
   };
-
 
 
 
