@@ -9,6 +9,7 @@ var modelJson;
 var looping = false;
 var assets = { plane_models:[], runway_models:[{},{},{},{},{}] };
 const planeEvent = new Event("plane_models_change");
+const moneyEvent = new Event("money_inc");
 var score_data = {}
 // XMLHttpRequest to get json data
 var jsonUrl = "https://robloxcom-corporation.github.io/planez/game/planes.json"
@@ -38,6 +39,7 @@ function Gamestate() {
   this.value = 000;
   var value = this.value;
   this.score = new Score(parent);
+  this.money = new Cash(parent);
 };
 
 // score initializer WIP
@@ -53,8 +55,28 @@ function Score(parent) {
       that.unlocked = false;
       parent.updateValue();
       score += parent.value;
+      gameData.money.unlocked = true;
+      canvas.dispatchEvent( moneyEvent );
     };
   };
+};
+
+function Cash(parent) {
+  var cash = 000;
+  var that = this;
+  this.unlocked = false;
+  this.get = function() {
+    return cash;
+  };
+  canvas.addEventListener("money_inc", function() {
+    if ( that.unlocked ) {
+      that.unlocked = false;
+      parent.updateValue();
+      cash += parent.value;
+
+    };
+  });
+
 };
 
 
