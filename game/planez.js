@@ -132,20 +132,31 @@ function init() {
 
   // wood
   buttons.wood = new Button(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10, "rect");
+  buttons.wood.value = 10;
   buttons.wood.component.color = "#ffaa00";
   buttons.wood.component.draw();
 
   buttons.wood.component.ico = new Component(0, canvas.width/5 + canvas.width/10, canvas.width/3/3, canvas.width/10, "img");
   buttons.wood.component.ico.image_uri = "game/assets/sprites/wood/woodsmall.png";
   buttons.wood.component.ico.parent = buttons.wood.component.ico;
-  buttons.wood.component.ico.draw();
+
+  buttons.wood.component.lock = new Component(0, canvas.width/5 + canvas.width/10, canvas.width/3/3, canvas.width/10, "img")
+  buttons.wood.component.lock.image_uri = "game/assets/sprites/lock.png";
+  buttons.wood.component.lock.parent = buttons.wood.component.lock;
+  buttons.wood.component.lock.draw();
 
   buttons.wood.component.title = new Component(canvas.width/6, canvas.width/5 + canvas.width/10/2 + canvas.width/10/10 + canvas.width/10, canvas.width/3/3, canvas.width/10, "text");
   buttons.wood.component.title.text = "Balsamic";
   buttons.wood.component.title.color = "#ffffff";
   buttons.wood.component.title.font = "20px Verdana";
-  buttons.wood.component.title.draw();
 
+  buttons.wood.component.value = new Component(canvas.width/8, canvas.width/5 + canvas.width/10/2 + canvas.width/10/10 + canvas.width/10, canvas.width/3/2, canvas.width/10, "text");
+  buttons.wood.component.value.text = "Locked: $" + buttons.wood.value;
+  buttons.wood.component.value.color = "#ffffff";
+  buttons.wood.component.value.font = "20px Verdana";
+  buttons.wood.component.value.draw();
+
+  buttons.wood.component.clear();
 
   // cessna
   buttons.cessna = new Button(0, canvas.width/5 + canvas.width/10 + canvas.width/10, canvas.width/3, canvas.width/10, "rect");
@@ -390,11 +401,23 @@ canvas.addEventListener("click", (e) => {
       model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
       gameData.cash.dec(buttons.paper.value);
     };
-  } else if (buttons.wood.checkIntersect(mouse) && gameData.typeId != 1) {
-    gameData.stageId = 0;
-    gameData.typeId = 1;
-    drawHitbox();
-    model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
+  //wood
+  } else if (buttons.wood.checkIntersect(mouse)) {
+    if (buttons.wood.purchased && gameData.typeId != 1) {
+      gameData.stageId = 0;
+      gameData.typeId = 1;
+      drawHitbox();
+      model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
+    } else if ( !buttons.wood.purchased && gameData.cash.get() >= buttons.wood.value ) {
+      buttons.wood.component.draw();
+      buttons.wood.component.ico.draw();
+      buttons.wood.component.title.draw();
+      buttons.wood.purchased = true;
+      gameData.typeId = 1;
+      gameData.stageId = 0;
+      model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
+      gameData.cash.dec(buttons.wood.value);
+    };
   } else if (buttons.cessna.checkIntersect(mouse) && gameData.typeId != 2) {
     gameData.stageId = 0;
     gameData.typeId = 2;
