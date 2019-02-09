@@ -4,6 +4,7 @@ var context = canvas.getContext("2d");
 var buttons = {};
 var cover;
 var model;
+var click;
 var gameData = new Gamestate;
 var modelJson;
 var looping = false;
@@ -14,7 +15,7 @@ var score_data = {}
 // XMLHttpRequest to get json data
 var jsonUrl = "https://robloxcom-corporation.github.io/planez/game/planes.json"
 var http = new XMLHttpRequest();
-http.open("GET", jsonUrl, true);
+http.open("GET", jsonUrl, false);
 http.onreadystatechange = function() {
   if (http.readyState == 4 && http.status == 200) {
     modelJson = JSON.parse(http.responseText)
@@ -103,77 +104,66 @@ function init() {
 
   // type changer buttons
   // paper
-  buttons.paper = new Button(0, canvas.width/5, canvas.width/3, canvas.width/10, "rect");
-  buttons.paper.value = 0;
-  buttons.paper.component.color = "#ff0000";
-  buttons.paper.component.draw();
 
-  buttons.paper.component.ico = new Component(0, canvas.width/5, canvas.width/3/3, canvas.width/10, "img");
-  buttons.paper.component.ico.image_uri = "game/assets/sprites/paper/smallpa.png";
-  buttons.paper.component.ico.parent = buttons.paper.component.ico;
+  // new changes here:
+  buttons.paper = new Button();
+  buttons.paper.cost = 0;
+  buttons.paper.color = "#ff0000" // temp
 
-  buttons.paper.component.lock = new Component(0, canvas.width/5, canvas.width/3/3, canvas.width/10, "img");
-  buttons.paper.component.lock.image_uri = "game/assets/sprites/lock.png";
-  buttons.paper.component.lock.parent = buttons.paper.component.lock;
-  buttons.paper.component.lock.draw();
+  buttons.wood = new Button();
+  buttons.wood.cost = 10;
+  buttons.wood.color = "#ffaa00" // temp
 
-  buttons.paper.component.title = new Component(canvas.width/6, canvas.width/5 + canvas.width/10/2 + canvas.width/10/10, canvas.width/3/3, canvas.width/10, "text");
-  buttons.paper.component.title.text = "Paper";
-  buttons.paper.component.title.color = "#ffffff";
-  buttons.paper.component.title.font = "20px Verdana";
+  buttons.cessna = new Button();
+  buttons.cessna.cost = 50;
+  buttons.cessna.color = "#ff5500" // temp
 
-  buttons.paper.component.value = new Component(canvas.width/8, canvas.width/5 + canvas.width/10/2 + canvas.width/10/10, canvas.width/3/2, canvas.width/10, "text");
-  buttons.paper.component.value.text = "Locked: $" + buttons.paper.value;
-  buttons.paper.component.value.color = "#ffffff";
-  buttons.paper.component.value.font = "20px Verdana";
-  buttons.paper.component.value.draw();
+  for (var i = 0; i < Object.keys(buttons).length; i++) {
+    var button;
+    function getType() {
+      switch (i) {
+        case 0:
+          return {id: 0, name: modelJson[i].data.type, obj: buttons.paper};
+        case 1:
+          return {id: 1, name: modelJson[i].data.type, obj: buttons.wood};
+        case 2:
+          return {id: 3, name: modelJson[i].data.type, obj: buttons.cessna};
+      };
+    };
+    var button = getType().obj;
+    button.x = 0;
+    button.y = canvas.height/5 + canvas.height/10 * i;
+    button.width = canvas.width/3;
+    button.height = canvas.height/10;
 
-  buttons.paper.component.clear();
+    button.init();
+    button.component.color = button.color;
+    button.component.draw();
 
-  // wood
-  buttons.wood = new Button(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10, "rect");
-  buttons.wood.value = 10;
-  buttons.wood.component.color = "#ffaa00";
-  buttons.wood.component.draw();
+    button.component.ico = new Component(0, canvas.width/5 + canvas.width/10 * i, canvas.height/3/3, canvas.width/10, "img");
+    button.component.ico.image_uri = modelJson[i].data.src_small;
+    button.component.ico.parent = button.component.ico;
+    button.component.ico;
 
-  buttons.wood.component.ico = new Component(0, canvas.width/5 + canvas.width/10, canvas.width/3/3, canvas.width/10, "img");
-  buttons.wood.component.ico.image_uri = "game/assets/sprites/wood/woodsmall.png";
-  buttons.wood.component.ico.parent = buttons.wood.component.ico;
+    button.component.lock = new Component(0, canvas.width/5 + canvas.height/10 * i, canvas.width/3/3, canvas.height/10, "img");
+    button.component.lock.image_uri = "game/assets/sprites/lock.png";
+    button.component.lock.parent = button.component.lock;
+    button.component.lock.draw();
 
-  buttons.wood.component.lock = new Component(0, canvas.width/5 + canvas.width/10, canvas.width/3/3, canvas.width/10, "img")
-  buttons.wood.component.lock.image_uri = "game/assets/sprites/lock.png";
-  buttons.wood.component.lock.parent = buttons.wood.component.lock;
-  buttons.wood.component.lock.draw();
+    button.component.title = new Component(canvas.width/6, 26 * canvas.height/100 + canvas.height/10 * i, canvas.width/3/3, canvas.height/10, "text");
+    button.component.title.text = getType().name.charAt(0).toUpperCase() + getType().name.slice(1);
+    button.component.title.color = "#ffffff";
+    button.component.title.font = "20px Verdana";
 
-  buttons.wood.component.title = new Component(canvas.width/6, canvas.width/5 + canvas.width/10/2 + canvas.width/10/10 + canvas.width/10, canvas.width/3/3, canvas.width/10, "text");
-  buttons.wood.component.title.text = "Balsamic";
-  buttons.wood.component.title.color = "#ffffff";
-  buttons.wood.component.title.font = "20px Verdana";
+    button.component.value = new Component(canvas.width/8, 26 * canvas.height/100 + canvas.height/10 * i, canvas.width/3/2, canvas.width/10, "text");
+    button.component.value.text = "Locked: $" + button.cost;
+    button.component.value.color = "#ffffff";
+    button.component.value.font = "20px Verdana";
+    button.component.value.draw();
 
-  buttons.wood.component.value = new Component(canvas.width/8, canvas.width/5 + canvas.width/10/2 + canvas.width/10/10 + canvas.width/10, canvas.width/3/2, canvas.width/10, "text");
-  buttons.wood.component.value.text = "Locked: $" + buttons.wood.value;
-  buttons.wood.component.value.color = "#ffffff";
-  buttons.wood.component.value.font = "20px Verdana";
-  buttons.wood.component.value.draw();
+    button.component.clear();
 
-  buttons.wood.component.clear();
-
-  // cessna
-  buttons.cessna = new Button(0, canvas.width/5 + canvas.width/10 + canvas.width/10, canvas.width/3, canvas.width/10, "rect");
-  buttons.cessna.component.color = "#ff5500";
-  buttons.cessna.component.draw();
-
-  buttons.cessna.component.ico = new Component(0, canvas.width/5 + 2 * canvas.width/10, canvas.width/3/3, canvas.width/10, "img");
-  buttons.cessna.component.ico.image_uri = "game/assets/sprites/cessna/cessnasmall.png";
-  buttons.cessna.component.ico.parent = buttons.cessna.component.ico;
-  buttons.cessna.component.ico.draw();
-
-  buttons.cessna.component.title = new Component(canvas.width/6, canvas.width/5 + canvas.width/10/2 + canvas.width/10/10 + 2 * canvas.width/10, canvas.width/3/3, canvas.width/10, "text");
-  buttons.cessna.component.title.text = "Cessna";
-  buttons.cessna.component.title.color = "#ffffff";
-  buttons.cessna.component.title.font = "20px Verdana";
-  buttons.cessna.component.title.draw();
-
+  };
 
 
   // draws initial model
@@ -283,8 +273,17 @@ function Component(x, y, width, height, type) {
 
 
 function Button(x, y, width, height, color) {
-  this.component = new Component(x, y, width, height, color, "rect");
-  this.component.clearColor = "#60606080";
+  this.x = x;
+  this.y = y;
+  this. width = width;
+  this.height = height;
+  this.color = color;
+  this.init = function() {
+    this.component = new Component(this.x, this.y, this.width, this.height, "rect");
+    this.component.color = this.color;
+    this.component.clearColor = "#60606080";
+
+  }
   this.checkIntersect = function(mousePos) {
     if ((mousePos.x < this.component.x + this.component.width)
     && (mousePos.x > this.component.x)
@@ -296,15 +295,15 @@ function Button(x, y, width, height, color) {
     };
   };
   this.buy = function() {
-    if (this.buyable && !this.purchased && gameData.cash.get() >= this.value) {
-      gameData.cash.dec(this.value);
+    if (this.buyable && !this.purchased && gameData.cash.get() >= this.cost) {
+      gameData.cash.dec(this.cost);
 
     };
 
   };
 
   // meta members
-  this.value;
+  this.cost;
   this.buyable;
   this.purchased;
 
@@ -341,7 +340,7 @@ function drawHitbox() {
   var dimention = 2 * canvas.width/3;
   context.fillRect(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
   context.stroke();
-  buttons.click = new Button(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3, "#ff0000");
+  click = new Button(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3, "#ff0000");
 };
 
 
@@ -364,7 +363,7 @@ function updateScore(num) {
 
 canvas.addEventListener("click", (e) => {
   var mouse = new Pos(e.clientX - 7, e.clientY - 7);
-  if (buttons.click.checkIntersect(mouse)) {
+  if (click.checkIntersect(mouse)) {
     gameData.stageId++;
     if (modelJson[gameData.typeId].data.stages == gameData.stageId) { // if intersect with main button
       gameData.score.unlocked = true;
@@ -391,7 +390,7 @@ canvas.addEventListener("click", (e) => {
       gameData.typeId = 0;
       drawHitbox();
       model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
-    } else if (!buttons.paper.purchased && gameData.cash.get() >= buttons.paper.value) { // purchase behavior
+    } else if (!buttons.paper.purchased && gameData.cash.get() >= buttons.paper.cost) { // purchase behavior
       buttons.paper.component.draw();
       buttons.paper.component.ico.draw();
       buttons.paper.component.title.draw();
@@ -399,7 +398,7 @@ canvas.addEventListener("click", (e) => {
       gameData.typeId = 0;
       gameData.stageId = 0;
       model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
-      gameData.cash.dec(buttons.paper.value);
+      gameData.cash.dec(buttons.paper.cost);
     };
   //wood
   } else if (buttons.wood.checkIntersect(mouse)) {
@@ -408,7 +407,7 @@ canvas.addEventListener("click", (e) => {
       gameData.typeId = 1;
       drawHitbox();
       model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
-    } else if ( !buttons.wood.purchased && gameData.cash.get() >= buttons.wood.value ) {
+    } else if ( !buttons.wood.purchased && gameData.cash.get() >= buttons.wood.cost ) {
       buttons.wood.component.draw();
       buttons.wood.component.ico.draw();
       buttons.wood.component.title.draw();
@@ -416,7 +415,7 @@ canvas.addEventListener("click", (e) => {
       gameData.typeId = 1;
       gameData.stageId = 0;
       model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
-      gameData.cash.dec(buttons.wood.value);
+      gameData.cash.dec(buttons.wood.cost);
     };
   } else if (buttons.cessna.checkIntersect(mouse) && gameData.typeId != 2) {
     gameData.stageId = 0;
