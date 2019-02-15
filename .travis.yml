@@ -10,7 +10,7 @@ jobs:
           script:
             - javascript-obfuscator game/planez.js --output game/obfussed.js --compact true
 before_deploy:
-    - git commit -m "travis-deploy $TRAVIS_BUILD_NUMBER [ci skip]"
+    - git commit -am "travis-deploy $TRAVIS_BUILD_NUMBER [ci skip]"
 deploy:
     provider: pages
     skip-cleanup: true
