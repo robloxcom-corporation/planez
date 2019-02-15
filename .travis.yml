@@ -1,6 +1,6 @@
 branches:
-    only:
-        - gh-pages
+    except:
+    - /travis-deploy/
 before_script:
     - npm i -g javascript-obfuscator
     #- yarn add --dev javascript-obfuscator
@@ -9,6 +9,8 @@ jobs:
         - stage: obfusscate
           script:
             - javascript-obfuscator game/planez.js --output game/obfussed.js --compact true
+before_deploy:
+    - git tag "travis-deploy $TRAVIS_BUILD_NUMBER"
 deploy:
     provider: pages
     skip-cleanup: true
