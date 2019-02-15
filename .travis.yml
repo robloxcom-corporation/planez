@@ -1,6 +1,8 @@
 branches:
     except:
         - /travis-deploy/
+    only:
+        - gh-pages
     include:
         - gh-pages
 before_script:
