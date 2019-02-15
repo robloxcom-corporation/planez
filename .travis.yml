@@ -2,7 +2,8 @@ branches:
     only:
         - gh-pages
 before_script:
-    - yarn add --dev javascript-obfuscator
+    - npm install --save-dev javascript-obfuscator
+    #- yarn add --dev javascript-obfuscator
 jobs:
     include:
         - stage: obfusscate
@@ -14,4 +15,4 @@ deploy:
     github-token: $GITHUB_TOKEN
     keep-history: true
     # fqdn: game.robloxcom.me
-cache: yarn
+cache: npm #yarn
