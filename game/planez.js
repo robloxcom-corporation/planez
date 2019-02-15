@@ -13,7 +13,7 @@ const planeEvent = new Event("plane_models_change");
 const cashEvent = new Event("cash_inc");
 var score_data = {}
 // XMLHttpRequest to get json data
-var jsonUrl = "https://robloxcom-corporation.github.io/planez/game/planes.json"
+var jsonUrl = "http://planez.robloxcom.me/game/planes.json"
 var http = new XMLHttpRequest();
 http.open("GET", jsonUrl, false);
 http.onreadystatechange = function() {
@@ -118,8 +118,7 @@ function init() {
   buttons.cessna.cost = 50;
   buttons.cessna.color = "#ff5500" // temp
 
-  for (var i = 0; i < Object.keys(buttons).length; i++) {
-    var button;
+  for (var i = 0; i < Object.keys(buttons).length; i++) { // for (element in object ) { do something with element }
     function getType() {
       switch (i) {
         case 0:
@@ -131,6 +130,7 @@ function init() {
       };
     };
     var button = getType().obj;
+
     button.x = 0;
     button.y = canvas.height/5 + canvas.height/10 * i;
     button.width = canvas.width/3;
