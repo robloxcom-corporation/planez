@@ -3,20 +3,16 @@ branches:
         - gh-pages
 before_script:
     - npm i -g javascript-obfuscator
-    #- yarn add --dev javascript-obfuscator
 jobs:
     include:
         - stage: obfusscate
           script:
             - javascript-obfuscator game/planez.js --output game/obfussed.js --compact true
-before_deploy:
-    - git commit -am "travis-deploy $TRAVIS_BUILD_NUMBER [ci skip]"
 deploy:
     provider: pages
     skip-cleanup: true
     github-token: $GITHUB_TOKEN
     keep-history: true
     on:
-        branch: gh-pages
-    # fqdn: game.robloxcom.me
-cache: npm #yarn
+        branch: obfusscated
+cache: npm
