@@ -1,6 +1,7 @@
+language: generic
 branches:
     only:
-        - gh-pages
+        - source
 before_script:
     - npm i -g javascript-obfuscator
 jobs:
@@ -13,7 +14,6 @@ deploy:
     skip-cleanup: true
     github-token: $GITHUB_TOKEN
     keep-history: true
-    target-branch: obfusscated
     on:
-        branch: gh-pages
+      branch: source
 cache: npm
