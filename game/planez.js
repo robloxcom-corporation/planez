@@ -13,7 +13,7 @@ const planeEvent = new Event("plane_models_change");
 const cashEvent = new Event("cash_inc");
 var score_data = {}
 // XMLHttpRequest to get json data
-var jsonUrl = "http://planez.robloxcom.me/game/planes.json"
+var jsonUrl = "https://planez.robloxcom.me/game/planes.json"
 var http = new XMLHttpRequest();
 http.open("GET", jsonUrl, false);
 http.onreadystatechange = function() {
