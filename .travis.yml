@@ -1,5 +1,17 @@
-language: node_js
 branches:
     only:
         - gh-pages
-script: node game/*.js
+before_script:
+    - yarn add --dev javascript-obfuscator
+jobs:
+    include:
+        - stage: obfusscate
+          script:
+            - javascript-obfuscator game/planez.js --output game/obfussed.js --compact true
+deploy:
+    provider: pages
+    skip-cleanup: true
+    github-token: $GITHUB_TOKEN
+    keep-history: true
+    # fqdn: game.robloxcom.me
+cache: yarn
