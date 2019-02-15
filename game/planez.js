@@ -3,96 +3,38 @@ var canvas = document.getElementById("gamecanvas");
 var context = canvas.getContext("2d");
 var buttons = {};
 var cover;
+var score = 0000;
 var model;
-var click;
-var gameData = new Gamestate;
-var modelJson;
-var looping = false;
-var assets = { plane_models:[], runway_models:[{},{},{},{},{}] };
-const planeEvent = new Event("plane_models_change");
-const cashEvent = new Event("cash_inc");
-var score_data = {}
-// XMLHttpRequest to get json data
-var jsonUrl = "https://planez.robloxcom.me/game/planes.json"
-var http = new XMLHttpRequest();
-http.open("GET", jsonUrl, false);
-http.onreadystatechange = function() {
-  if (http.readyState == 4 && http.status == 200) {
-    modelJson = JSON.parse(http.responseText)
-  };
-};
-http.send();
-
-// XMLHttpRequest using Ajax (must link ajax lib in html document)
 /* var modelJson;
 $.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", function (data) {
   modelJson = data;
 }); */
+var stageData = {"typeId":0, "stageId":0};
+var imgDomain = "https://robloxcom-corporation.github.io/planez/game/assets/sprites/";
+var runwayModels = [{},{},{},{},{}];
+var gameData = {"typeCount": 2}
 
-
-function Gamestate() {
-  var parent = this;
-  this.stageId = 0;
-  this.typeId = -1;
-  this.updateValue = function() {
-    this.value = modelJson[this.typeId].data.value;
-  };
-  this.value = 000;
-  var value = this.value;
-  this.score = new Score(parent);
-  this.cash = new Cash(parent);
-};
 
 // score initializer WIP
-function Score(parent) {
-  var score = 000;
-  var that = this;
-  this.unlocked = false;
+function Score(param) {
+  var score = param;
   this.get = function() {
     return score;
   };
-  this.inc = function() {
-    if ( that.unlocked ) {
-      that.unlocked = false;
-      parent.updateValue();
-      score += parent.value;
-      gameData.cash.unlocked = true;
-      canvas.dispatchEvent( cashEvent );
-    };
-  };
 };
-
-function Cash(parent) {
-  var cash = 000;
-  var that = this;
-  this.unlocked = false;
-  this.get = function() {
-    return cash;
-  };
-  this.dec = function(val_) {
-    cash -= val_;
-  }
-  canvas.addEventListener("cash_inc", function() {
-    if ( that.unlocked ) {
-      that.unlocked = false;
-      parent.updateValue();
-      cash += parent.value;
-
-    };
-  });
-
-};
+var secret = new Score(0);
+console.log(secret.get());
 
 
 function init() {
 
   // runway background
-  var background = new Component(0, 0, canvas.width, canvas.width/5, "rect");
-  background.color = "#808080";
-  background.draw();
+  context.beginPath();
+  context.fillStyle = "#808080";
+  context.fillRect(0, 0, canvas.width, canvas.width/5);
+  context.stroke();
 
   //runway models
-  setupRunway();
   drawRunway();
 
   // click area outline and hitbox
@@ -104,231 +46,74 @@ function init() {
 
   // type changer buttons
   // paper
-
-  // new changes here:
-  buttons.paper = new Button();
-  buttons.paper.cost = 0;
-  buttons.paper.color = "#ff0000" // temp
-
-  buttons.wood = new Button();
-  buttons.wood.cost = 10;
-  buttons.wood.color = "#ffaa00" // temp
-
-  buttons.cessna = new Button();
-  buttons.cessna.cost = 50;
-  buttons.cessna.color = "#ff5500" // temp
-
-  for (var i = 0; i < Object.keys(buttons).length; i++) { // for (element in object ) { do something with element }
-    function getType() {
-      switch (i) {
-        case 0:
-          return {id: 0, name: modelJson[i].data.type, obj: buttons.paper};
-        case 1:
-          return {id: 1, name: modelJson[i].data.type, obj: buttons.wood};
-        case 2:
-          return {id: 3, name: modelJson[i].data.type, obj: buttons.cessna};
-      };
-    };
-    var button = getType().obj;
-
-    button.x = 0;
-    button.y = canvas.height/5 + canvas.height/10 * i;
-    button.width = canvas.width/3;
-    button.height = canvas.height/10;
-
-    button.init();
-    button.component.color = button.color;
-    button.component.draw();
-
-    button.component.ico = new Component(0, canvas.width/5 + canvas.width/10 * i, canvas.height/3/3, canvas.width/10, "img");
-    button.component.ico.image_uri = modelJson[i].data.src_small;
-    button.component.ico.parent = button.component.ico;
-    button.component.ico;
-
-    button.component.lock = new Component(0, canvas.width/5 + canvas.height/10 * i, canvas.width/3/3, canvas.height/10, "img");
-    button.component.lock.image_uri = "game/assets/sprites/lock.png";
-    button.component.lock.parent = button.component.lock;
-    button.component.lock.draw();
-
-    button.component.title = new Component(canvas.width/6, 26 * canvas.height/100 + canvas.height/10 * i, canvas.width/3/3, canvas.height/10, "text");
-    button.component.title.text = getType().name.charAt(0).toUpperCase() + getType().name.slice(1);
-    button.component.title.color = "#ffffff";
-    button.component.title.font = "20px Verdana";
-
-    button.component.value = new Component(canvas.width/8, 26 * canvas.height/100 + canvas.height/10 * i, canvas.width/3/2, canvas.width/10, "text");
-    button.component.value.text = "Locked: $" + button.cost;
-    button.component.value.color = "#ffffff";
-    button.component.value.font = "20px Verdana";
-    button.component.value.draw();
-
-    button.component.clear();
-
-  };
-
+  context.beginPath();
+  context.fillStyle = "#ff0000ff"
+  context.fillRect(0, canvas.width/5, canvas.width/3, canvas.width/10);
+  context.stroke();
+  buttons.paper = new Button(0, canvas.width/5, canvas.width/3, canvas.width/10);
+  // wood
+  context.beginPath();
+  context.fillStyle = "#ffaa00ff"
+  context.fillRect(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10);
+  context.stroke();
+  buttons.wood = new Button(0, canvas.width/5 + canvas.width/10, canvas.width/3, canvas.width/10);
+  // cessna
+  context.beginPath();
+  context.fillStyle = "#ff5500ff"
+  context.fillRect(0, canvas.width/5 + canvas.width/10 + canvas.width/10, canvas.width/3, canvas.width/10);
+  context.stroke();
+  buttons.cessna = new Button(0, canvas.width/5 + canvas.width/10 + canvas.width/10, canvas.width/3, canvas.width/10);
 
   // draws initial model
   model = new Image();
   model.onload = function() {
     context.drawImage(this, canvas.width/3 + 2 * canvas.width/9, canvas.width/5 + 2 * canvas.width/9, 2 * canvas.width/9 , 2 * canvas.width/9);
   };
-  // model.src = "game/assets/sprites/paper/pa1.png";
+  model.src = "game/assets/sprites/paper/pa1.png";
 
   // initial score
-  score_data.score_title = new Component((2 * canvas.width/3) - (2 * canvas.width/6), (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
-  score_data.score_title.type = "text";
-  score_data.score_title.font = "20px Verdana";
-  score_data.score_title.color = "#ff0000";
-  score_data.score_title.text = "Score: "
-  score_data.score_title.draw();
-
-  score_data.score_value = new Component((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
-  score_data.score_value.type = "text";
-  score_data.score_value.font = "20px Verdana";
-  score_data.score_value.color = "#ff0000";
-  score_data.score_value.text = gameData.score.get();
-  score_data.score_value.draw();
-
-  score_data.score_value.cover = new Component(
-    (2 * canvas.width/3) - (2 * canvas.width/6) + 100,
-    (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10,
-    5 * canvas.width/2,
-    -4 * canvas.width/120,
-    "rect"
-  );
-  score_data.score_value.cover.color = "#ffffff";
+  context.font = "20px Verdana";
+  context.fillStyle = "#ff0000";
+  context.fillText("Score: ", (2 * canvas.width/3) - (2 * canvas.width/6), (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
+  context.fillText("0000", (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 2 * canvas.width/5);
+  cover = new Pos((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10);
 
 
 };
 
+function drawRunway() {
+  var pos = new Pos(0, 0);
+  for (var i = 0; i < runwayModels.length; i++) {
+    var imag = runwayModels[i];
+    imag = new Image();
+    imag.onload = function() {
+      context.drawImage(this, pos.x, pos.y, 100, 100);
+      pos.x += 100;
+    };
+    if (i < runwayModels.length - 1) {
+      imag.src = "game/assets/sprites/runway/runway1.png"
+    } else {
+      imag.src = "game/assets/sprites/runway/runway2.png"
+    };
+  };
 
-function Component(x, y, width, height, type) {
+
+};
+
+function Button(x, y, width, height) {
   this.x = x;
   this.y = y;
   this.width = width;
   this.height = height;
-  this.type = type;
-  this.draw = function() {
-    switch (this.type) {
-      case "rect":
-        context.beginPath();
-        context.fillStyle = this.color;
-        context.lineWidth = "0px";
-        context.fillRect(this.x, this.y, this.width, this.height);
-        context.stroke();
-        break;
-      case "outline":
-        context.beginPath();
-        context.fillStyle = color;
-        context.lineWidth = "2px";
-        context.rect(this.x, this.y, this.width, this.height);
-        context.stroke();
-        break;
-      case "img":
-        var parent = this;
-        this.image = new Image();
-        this.image.onload = function() {
-          context.drawImage(this, parent.x, parent.y, parent.width, parent.height);
-
-        };
-        this.image.src = parent.image_uri;
-        break;
-      case "text":
-        context.beginPath();
-        context.fillStyle = this.color;
-        context.font = this.font;
-        context.fillText(this.text, this.x, this.y, this.width, this.height)
-        context.stroke();
-        break;
-    };
-  };
-
-  this.clear = function() {
-    if (this.clearColor) {
-      context.beginPath();
-      context.fillStyle = this.clearColor;
-      context.lineWidth = "0px";
-      context.fillRect(this.x, this.y, this.width, this.height);
-      context.stroke();
-    } else {
-      context.beginPath();
-      context.lineWidth = "0px";
-      context.clearRect(this.x, this.y, this.width, this.height);
-      context.stroke();
-    };
-  };
-
-  // meta members
-  this.parent;
-  this.image;
-  this.img_uri;
-  this.color;
-  this.clearColor;
-  this.font;
-  this.text;
-  this.timestamp_start;
-  this.timestamp_progress;
-  this.debugId;
-
-};
-
-
-function Button(x, y, width, height, color) {
-  this.x = x;
-  this.y = y;
-  this. width = width;
-  this.height = height;
-  this.color = color;
-  this.init = function() {
-    this.component = new Component(this.x, this.y, this.width, this.height, "rect");
-    this.component.color = this.color;
-    this.component.clearColor = "#60606080";
-
-  }
   this.checkIntersect = function(mousePos) {
-    if ((mousePos.x < this.component.x + this.component.width)
-    && (mousePos.x > this.component.x)
-    && (mousePos.y < this.component.y + this.component.height)
-    && (mousePos.y > this.component.y)) {
+    if ((mousePos.x < this.x + this.width) && (mousePos.x > this.x) && (mousePos.y < this.y + this.height) && (mousePos.y > this.y)) {
       return true
     } else {
       return false
     };
-  };
-  this.buy = function() {
-    if (this.buyable && !this.purchased && gameData.cash.get() >= this.cost) {
-      gameData.cash.dec(this.cost);
-
-    };
 
   };
 
-  // meta members
-  this.cost;
-  this.buyable;
-  this.purchased;
-
-};
-
-
-function setupRunway() {
-  for (var i = 0; i < 5; i++) {
-    assets.runway_models[i] = new Component(canvas.width/5 * i, 0, canvas.width/5, canvas.width/5, "img");
-    assets.runway_models[i].debugId = "runway" + i;
-    if (i < assets.runway_models.length - 1) {
-      assets.runway_models[i].image_uri = "game/assets/sprites/runway/runway1.png"
-    } else {
-      assets.runway_models[i].image_uri = "game/assets/sprites/runway/runway2.png"
-    };
-
-  };
-
-};
-
-
-function drawRunway() {
-    for (var i = 0; i < 5; i++) {
-      assets.runway_models[i].draw();
-    };
 };
 
 
@@ -340,8 +125,7 @@ function drawHitbox() {
   var dimention = 2 * canvas.width/3;
   context.fillRect(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
   context.stroke();
-  click = new Button(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3, "#ff0000");
-  click.init();
+  buttons.click = new Button(posX + dimention/3, posY + dimention/3, dimention/3 , dimention/3);
 };
 
 
@@ -352,73 +136,55 @@ function Pos(x, y) {
 
 
 function updateScore(num) {
-  if (num == gameData.score.get()) {
+  context.beginPath();
+  context.fillStyle = "#ffffff";
+  context.fillRect(cover.x, cover.y + canvas.width/500, 5 * canvas.width/2, -4 * canvas.width/120);
+  context.stroke();
 
-    score_data.score_value.cover.draw();
-    score_data.score_value.text = num;
-    score_data.score_value.draw();
-    // (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 200
-  };
+  context.beginPath();
+  context.font = "20px Verdana";
+  context.fillStyle = "#ff0000";
+  context.fillText(score, (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 200);
+  context.stroke();
 };
 
 
 canvas.addEventListener("click", (e) => {
   var mouse = new Pos(e.clientX - 7, e.clientY - 7);
-  if (click.checkIntersect(mouse) && gameData.typeId != -1) {
-    gameData.stageId++;
-    if (modelJson[gameData.typeId].data.stages == gameData.stageId) { // if intersect with main button
-      gameData.score.unlocked = true;
-      gameData.score.inc();
-      updateScore(gameData.score.get());
-      var img = new Component(canvas.width, Math.random() * 50, canvas.width/10, canvas.width/10, "img");
-      img.image_uri = modelJson[gameData.typeId].data.src_small;
-      img.parent = img;
-      assets.plane_models.push(img)
-      if (!looping) { canvas.dispatchEvent(planeEvent) };
 
-    };
-    if (gameData.stageId >= modelJson[gameData.typeId].data.stages) {
-      gameData.stageId = 0;
+  if (buttons.click.checkIntersect(mouse)) {
+    if (modelJson[stageData.typeId].planes.length - 1 == stageData.stageId) {
+      score += modelJson[stageData.typeId].data.value;
+      updateScore(score);
+      };
+      stageData.stageId++;
+      if (stageData.stageId == modelJson[stageData.typeId].planes.length) {
+        stageData.stageId = 0;
+
     };
     drawHitbox();
-    model.src = modelJson[gameData.typeId].planes[gameData.stageId].src;
+    model.src = modelJson[stageData.typeId].planes[stageData.stageId].src;
 
-  // if intertsect with other buttons
-  } else {
-    for (var i = 0; i < Object.keys(buttons).length; i++) {
-      function getType() {
-        switch (i) {
-          case 0:
-            return {id: 0, name: modelJson[i].data.type, obj: buttons.paper};
-          case 1:
-            return {id: 1, name: modelJson[i].data.type, obj: buttons.wood};
-          case 2:
-            return {id: 3, name: modelJson[i].data.type, obj: buttons.cessna};
-        };
-      };
-      var button = getType().obj;
 
-      if (button.checkIntersect(mouse)) {
-        if (button.purchased && gameData.typeId != i) { // usual behavior
-          gameData.typeId = i;
-          gameData.stageId = 0;
-          drawHitbox();
-          model.src = modelJson[i].planes[gameData.stageId].src;
+  } else if (buttons.paper.checkIntersect(mouse) && stageData.typeId != 0) {
+    stageData.stageId = 0;
+    stageData.typeId = 0;
+    drawHitbox();
+    model.src = modelJson[stageData.typeId].planes[stageData.stageId].src;
+  } else if (buttons.wood.checkIntersect(mouse) && stageData.typeId != 1) {
+    stageData.stageId = 0;
+    stageData.typeId = 1;
+    drawHitbox();
+    model.src = modelJson[stageData.typeId].planes[stageData.stageId].src;
+  } else if (buttons.cessna.checkIntersect(mouse) && stageData.typeId != 2) {
+    stageData.stageId = 0;
+    stageData.typeId = 2;
+    drawHitbox();
+    model.src = modelJson[stageData.typeId].planes[stageData.stageId].src;
 
-        } else if (!button.purchased && gameData.cash.get() >= button.cost) { // purchase behavior
-          button.component.draw();
-          button.component.ico.draw();
-          button.component.title.draw();
-          button.purchased = true;
-          gameData.typeId = i;
-          gameData.stageId = 0;
-          drawHitbox();
-          model.src = modelJson[i].planes[gameData.stageId].src;
-          gameData.cash.dec(buttons.paper.cost);
-        };
-      };
-    };
   };
+
+
 
 
 
@@ -427,30 +193,5 @@ canvas.addEventListener("click", (e) => {
 
 });
 
-
-function animateRunway(timestamp) {
-  looping = true;
-  for(var i = 0; i < assets.runway_models.length; i++) {
-    assets.runway_models[i].draw();
-  };
-  for (var i = 0; i < assets.plane_models.length; i++) {
-    if ( !assets.plane_models[i].timestamp_start ) { assets.plane_models[i].timestamp_start = timestamp };
-    assets.plane_models[i].timestamp_progress = timestamp - assets.plane_models[i].timestamp_start;
-    assets.plane_models[i].draw();
-    assets.plane_models[i].x = canvas.width - ( .1 * assets.plane_models[i].timestamp_progress);
-    if (assets.plane_models[i].x < -35) {
-      assets.plane_models.shift();
-    };
-
-  };
-  if (assets.plane_models != 0) {
-    window.requestAnimationFrame( animateRunway );
-  } else { looping = false }; // experienced higher performance without this line (for unknown reason)
-
-};
 
 window.onload = init();
-
-canvas.addEventListener("plane_models_change", function() {
-  window.requestAnimationFrame( animateRunway );
-});

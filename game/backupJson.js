@@ -185,12 +185,12 @@ var modelJson = [
 						"stageId": 9,
 						"stageName": "cessna10",
 						"src": "game/assets/sprites/cessna/cessna10.png"
-					}
+					},
 
 
 
 				]
-			}
+			},
 
 
 	]
