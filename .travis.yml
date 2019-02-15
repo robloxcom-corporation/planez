@@ -1,6 +1,8 @@
 branches:
     except:
-    - /travis-deploy/
+        - /travis-deploy/
+    include:
+        - gh-pages
 before_script:
     - npm i -g javascript-obfuscator
     #- yarn add --dev javascript-obfuscator
