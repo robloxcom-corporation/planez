@@ -1,7 +1,7 @@
 language: generic
 branches:
     only:
-        - source
+        - master
 before_script:
     - npm i -g javascript-obfuscator
 jobs:
@@ -15,5 +15,5 @@ deploy:
     github-token: $GITHUB_TOKEN
     keep-history: true
     on:
-      branch: source
+      branch: master
 cache: npm
