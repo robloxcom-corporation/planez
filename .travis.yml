@@ -2,7 +2,7 @@ branches:
     only:
         - gh-pages
 before_script:
-    - npm install --save-dev javascript-obfuscator
+    - npm i -g javascript-obfuscator
     #- yarn add --dev javascript-obfuscator
 jobs:
     include:
