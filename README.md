@@ -1,2 +1,2 @@
-# planez [![Build Status](https://travis-ci.com/KabirKwatra/planez.svg?branch=gh-pages)](https://travis-ci.com/KabirKwatra/planez)
+# planez [![Build Status](https://travis-ci.com/robloxcom-corporation/planez.svg?branch=gh-pages)](https://travis-ci.com/robloxcom-corporation/planez)
 javascript clicker game
