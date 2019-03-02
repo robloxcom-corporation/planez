@@ -198,6 +198,31 @@ function init() {
   score_data.score_value.cover.color = "#ffffff";
 
 
+  score_data.money_title = new Component((2 * canvas.width/3) - (2 * canvas.width/6), (canvas.width/5) + (2 * canvas.width/3) + canvas.width/5);
+  score_data.money_title.type = "text";
+  score_data.money_title.font = "20px Verdana";
+  score_data.money_title.color = "#ff0000";
+  score_data.money_title.text = "Cash: "
+  score_data.money_title.draw();
+
+  score_data.money_value = new Component((2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/5);
+  score_data.money_value.type = "text";
+  score_data.money_value.font = "20px Verdana";
+  score_data.money_value.color = "#ff0000";
+  score_data.money_value.text = gameData.cash.get();
+  score_data.money_value.draw();
+
+  score_data.money_value.cover = new Component(
+    (2 * canvas.width/3) - (2 * canvas.width/6) + 100,
+    (canvas.width/5) + (2 * canvas.width/3) + canvas.width/5,
+    5 * canvas.width/2,
+    -4 * canvas.width/120,
+    "rect"
+  );
+  score_data.money_value.cover.color = "#ffffff";
+
+
+
 };
 
 
@@ -233,6 +258,7 @@ function Component(x, y, width, height, type) {
         this.image.src = parent.image_uri;
         break;
       case "text":
+        console.log(this.text)
         context.beginPath();
         context.fillStyle = this.color;
         context.font = this.font;
@@ -357,7 +383,6 @@ function updateScore(num) {
     score_data.score_value.cover.draw();
     score_data.score_value.text = num;
     score_data.score_value.draw();
-    // (2 * canvas.width/3) - (2 * canvas.width/6) + 100, (canvas.width/5) + (2 * canvas.width/3) + canvas.width/10, 200
   };
 };
 
