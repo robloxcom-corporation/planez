@@ -23,7 +23,7 @@ http.onreadystatechange = function() {
 };
 http.send();
 
-// XMLHttpRequest using Ajax (must link ajax lib in html document)
+// XMLHttpRequest using jQuery ajax (must link jQuery lib in html document)
 /* var modelJson;
 $.getJSON("https://robloxcom-corporation.github.io/planez/game/planes.json", function (data) {
   modelJson = data;
