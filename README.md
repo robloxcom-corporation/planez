@@ -9,11 +9,12 @@ dont worry, this README will get better over time
 ## Objective:
 Get as much money as possible.
 
-You are a solo plane construction company, and you need to compete with the competition. Work your way up from folding paper airplanes until you can afford to manufacture planes such as commercial airliners and military jets. 
-
-Unlock 
+You are a solo plane construction company, and you need to compete with the competition. Work your way up from folding paper airplanes until you can afford to manufacture more planes! 
 
 ## Features:
 <ul>
-  <li>4 plane types [being updated]</li>
-</ul
+  <li>3 plane types [being updated]</li>
+</ul>
+
+
+![alt text](Planez_Sample.png "PLANEZ Sample Image")
