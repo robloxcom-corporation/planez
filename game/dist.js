@@ -1,2 +1,2 @@
 
-module = require('./planez.js');
+module = require('.game/planez.js');
