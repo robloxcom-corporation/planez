@@ -15,4 +15,4 @@ You are a solo plane construction company, and you need to compete with the comp
 </ul>
 
 
-<a href="https://robloxcom-corporation.github.io/planez/">![alt text](Planez_Sample.png "PLANEZ Sample Image")</a>
+<a href="https://robloxcom-corporation.github.io/planez/">![PLANEZ_Sample_Image](Planez_Sample.png "PLANEZ")</a>
