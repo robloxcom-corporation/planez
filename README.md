@@ -2,8 +2,6 @@
 
 A clicker game built in Javascript
 
-dont worry, this README will get better over time
-
 <hr/>
 
 ## Objective:
@@ -17,4 +15,4 @@ You are a solo plane construction company, and you need to compete with the comp
 </ul>
 
 
-![Planez Sample Image](play.gif)
+<a href="https://robloxcom-corporation.github.io/planez/"> ![Planez Sample Image](play.gif)</a>
