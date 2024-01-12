@@ -17,4 +17,4 @@ You are a solo plane construction company, and you need to compete with the comp
 </ul>
 
 
-![alt text](Planez_Sample.png "PLANEZ Sample Image")
+![Planez Sample Image](play.gif)
